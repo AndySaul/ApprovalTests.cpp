@@ -39,6 +39,7 @@ DOCUMENTATION
 
 RELEASES
 
+. Update Catch version in Starter Project
 . include licence in released header
 
 FORMATTING OF CODE
