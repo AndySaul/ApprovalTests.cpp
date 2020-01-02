@@ -1,4 +1,4 @@
-// startcode googletest_existing_main
+// begin-snippet: googletest_existing_main
 // main.cpp:
 
 // 1. Add these two lines to your main:
@@ -10,14 +10,14 @@ int main(int argc, char** argv)
     ::testing::InitGoogleTest(&argc, argv);
     
     // 2. Add this line to your main:
-    initializeApprovalTestsForGoogleTests();
+    ApprovalTests::initializeApprovalTestsForGoogleTests();
 
     return RUN_ALL_TESTS();
 }
-// endcode
+// end-snippet
 
-// startcode do_not_report_on_ci
+// begin-snippet: do_not_report_on_named_machine
 // main.cpp
-auto frontLoadedReportDisposer = Approvals::useAsFrontLoadedReporter(
-    BlockingReporter::onMachineNamed("MyCIMachineName") );
-// endcode
+auto frontLoadedReportDisposer = ApprovalTests::Approvals::useAsFrontLoadedReporter(
+    ApprovalTests::BlockingReporter::onMachineNamed("MyCIMachineName") );
+// end-snippet

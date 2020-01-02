@@ -1,0 +1,4 @@
+add_subdirectory(Catch2_Tests)
+add_subdirectory(GoogleTest_Tests)
+add_subdirectory(DocTest_Tests)
+add_subdirectory(UT_Tests)

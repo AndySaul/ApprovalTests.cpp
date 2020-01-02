@@ -3,20 +3,8 @@
 # Contributing to ApprovalTests.cpp
 
 
+toc
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
-
-- [Contributing - pairing and pull requests](#contributing---pairing-and-pull-requests)
-- [Documentation](#documentation)
-  - [Creating new pages](#creating-new-pages)
-  - [Internal links need to be absolute](#internal-links-need-to-be-absolute)
-  - [Adding code and file samples](#adding-code-and-file-samples)
-  - [Checking the documentation](#checking-the-documentation)
-- [Releases](#releases)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 ## Contributing - pairing and pull requests
@@ -31,6 +19,30 @@ A typical session lasts between 60 to 90 minutes. We do the work directly on mas
 
 We use github's "co-author" feature, so everyone in the pairing session gets credit for the work. Virtually this entire project has been developed in this way, and is stronger for it.
 
+We use [Arlo's Commit Notation](https://github.com/RefactoringCombos/ArlosCommitNotation) to prefix most commits, to indicate their level or risk.
+
+### Definition of Done
+
+*Note: Reminder for Clare and Llewellyn*
+
+* [ ] Tests
+* [ ] Documentation
+    * [ ] Sample code
+    * [ ] Copy+pastable template (if appropriate)
+    * [ ] A link on [Features](/doc/Features.md#top)
+    * [ ] A link on [build/relnotes_X.X.X.md](https://github.com/approvals/ApprovalTests.cpp/blob/master/build/relnotes_X.X.X.md)
+    * [ ] Links on other appropriate places
+* [ ] Check the [Dashboard](https://github.com/claremacrae/dashboard#top) (after pushing)
+* [ ] Retrospective (as an experiment) on what we learned from the work
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](/CODE_OF_CONDUCT.md#top). By participating in this project you agree to abide by its terms.
+
+## Coding Patterns
+
+See [Static variables for header-only releases](/doc/CodingPatterns.md#static-variables-for-header-only-releases).
+
 ## Documentation
 
 We welcome improvements to the documentation! Here's how we manage the documentation files. 
@@ -39,14 +51,30 @@ We welcome improvements to the documentation! Here's how we manage the documenta
 
 *Note: All the master Markdown pages in this project are called `mdsource/[something].source.md`*
 
+**Using the template page**
+
 If creating a new Markdown page, please make a copy of [doc/mdsource/TemplatePage.source.md](/doc/mdsource/TemplatePage.source.md#top).
 This contains some boilerplate text which is tedious to create by hand.
 
 The new file needs to be in a `mdsource` sub-directory.
 
+**Creating mutliple pages**
+
+If creating multiple files, on Unix, you can use the script `doc/mdsource/create_page.sh`
+
+```bash
+cd doc/mdsource/
+./create_page.sh TestingSingleObjects TestingContainers TestingCombinations
+```
+
+This won't overwrite existing files.
+It will write out the text to paste in to other .md files, to correctly link to the new file. 
+
+**For documentation files outside of doc**
+
 If the new page will be outside of the [doc](/doc/) folder, delete the following lines at the end:
 
-```
+```markdown
 ---
    
 [Back to User Guide](/doc/README.md#top)
@@ -94,16 +122,21 @@ We use Simon Cropp's [MarkdownSnippets](https://github.com/SimonCropp/MarkdownSn
 
 The script [fix_markdown.sh](/fix_markdown.sh) can be used to do some checks of the Markdown documentation files.
 
-It can be run in cygwin with:
-
-```bash
-cat ./fix_markdown.sh | dos2unix | bash
-```
-
 ## Releases
 
 * Everything for releases is in [the build directory](/build/)
 * There's more information in [How To Release](/build/HowToRelease.md#top)
+
+## Running shell scripts in cygwin
+
+To run `.sh` in cygwin on Windows, add these lines to `~/.bash_profile`, and then re-start cygwin:
+
+```bash
+export SHELLOPTS
+set -o igncr
+```
+
+[Credit](https://ptolemy.berkeley.edu/projects/chess/softdevel/faq/5.html)
 
 ---
 

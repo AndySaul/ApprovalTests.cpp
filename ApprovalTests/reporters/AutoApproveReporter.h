@@ -1,9 +1,12 @@
 #ifndef APPROVALTESTS_CPP_AUTOAPPROVEREPORTER_H
 #define APPROVALTESTS_CPP_AUTOAPPROVEREPORTER_H
 
-#include "Reporter.h"
-#include "../FileUtilsSystemSpecific.h"
+#include "ApprovalTests/core/Reporter.h"
+#include "ApprovalTests/utilities/FileUtilsSystemSpecific.h"
 
+#include <iostream>
+
+namespace ApprovalTests {
 class AutoApproveReporter : public Reporter
 {
 public:
@@ -14,5 +17,6 @@ public:
         return true;
     }
 };
+}
 
 #endif

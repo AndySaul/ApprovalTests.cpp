@@ -3,19 +3,20 @@
 
 #include "DiffPrograms.h"
 #include "CommandReporter.h"
-#include "SystemLauncher.h"
+#include "ApprovalTests/launchers/SystemLauncher.h"
 #include <string>
 #include <vector>
 
+namespace ApprovalTests {
 class GenericDiffReporter : public CommandReporter {
 private:
     SystemLauncher launcher;
 public:
-    GenericDiffReporter(const std::string& program) : CommandReporter(program, &launcher)
+    explicit GenericDiffReporter(const std::string& program) : CommandReporter(program, &launcher)
     {
         checkForCygwin();
     }
-    GenericDiffReporter(const DiffInfo& info) : CommandReporter(info.getProgramForOs().c_str(), &launcher)
+    explicit GenericDiffReporter(const DiffInfo& info) : CommandReporter(info.getProgramForOs(), &launcher)
     {
         checkForCygwin();
     }
@@ -49,5 +50,6 @@ public:
         return copy;
     }
 };
+}
 
 #endif //APPROVALTESTS_CPP_GENERICDIFFREPORTER_H

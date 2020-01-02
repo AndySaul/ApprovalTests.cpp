@@ -2,88 +2,83 @@
 
 # ApprovalTests.cpp User Guide
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
+To get the most out of ApprovalTests, start with the  [Tutorial](/doc/Tutorial.md#top).
+Once you're up and running, consider the following reference material. 
 
-- [Introduction](#introduction)
-- [Setup](#setup)
-- [Writing Tests](#writing-tests)
-- [Customising behaviour](#customising-behaviour)
-- [Common Challenges](#common-challenges)
-- [Common Scenarios](#common-scenarios)
-- [Extras](#extras)
-- [Advanced Topics](#advanced-topics)
+toc
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+## Preparation
 
-<!-- To get the most out of ApprovalTests, start with the Tutorial.
-Once you're up and running, consider the following reference material. -->
+### Introduction
 
-## Introduction
-
+* [Overview](/doc/Overview.md#top)
 * [Approval Testing (the concept)](/doc/ApprovalTestingConcept.md#top)
 * What is Approval Testing?
 * Why Approval Tests?
-    * The Path to Approval Testing
-        * Verify numbers
-            * Have lots of numbers, like an array
-        * Strings - turn the array of numbers in to a string
-            * Those strings become long
-        * Files - Golden Master
-            * Managing them - coming up with names
-        * Some sort of naming convention
-        * Can be hard to understand what's in the files
-            * Start using diff tools
-        * Start creating custom methods for the things you are testing
-            * verifyThing
+* [The Path to Approval Testing](/doc/PathToApprovalTesting.md#top)
+* [Glossary](/doc/Glossary.md#top)
 
-## Setup
+### Setup
 
-* Obtaining ApprovalTests.cpp
-    * Get a test framework
-    * Downloading the latest release
-        * Adding a wrapper header
-        * Renaming the header file to remove version number
-    * [ApprovalTests.cpp.StarterProject](https://github.com/approvals/ApprovalTests.cpp.StarterProject)
-    * Cloning repo and using CMake
-* [Getting Started](/doc/GettingStarted.md#top) - setting up `main()`
-* [Using Approval Tests With Catch](/doc/UsingCatch.md#top)
-* [Using Approval Tests With Google Tests](/doc/UsingGoogleTests.md#top)
+There are three different places you might be starting your setup from.
 
-## Writing Tests
+Here's how to set up from:
 
-* Tutorial
-* Testing single objects
-* Testing containers
+* [I have nothing](/doc/Setup.md#i-have-nothing)
+* [I have code but no tests](/doc/Setup.md#i-have-code-but-no-tests)
+* [I have tests and code and want to add Approval Tests](/doc/Setup.md#i-have-tests-and-code-and-want-to-add-approval-tests)
+
+## Use
+
+### Writing Tests
+
+* [Tutorial](/doc/Tutorial.md#top)
+* [Testing single objects](/doc/TestingSingleObjects.md#top)
+* [Testing containers](/doc/TestingContainers.md#top)
 * [Testing exceptions](/doc/TestingExceptions.md#top)
-* Testing combinations - containers of containers (of containers...)
+* [Testing combinations](/doc/TestingCombinations.md#top) - containers of containers (of containers...)
 * [To String](/doc/ToString.md#top)
 * Worked example of getting to 'make the thing; verify the thing' - 'do; verify'
-* [Features](/doc/Features.md#top)
+* [Features](/doc/Features.md#top) - recent additions
 
-## Customising behaviour
+### Test Frameworks
+
+* [Using Approval Tests With Catch](/doc/UsingCatch.md#top)
+* [Using Approval Tests With Google Tests](/doc/UsingGoogleTests.md#top)
+* [Using Approval Tests With Doctest](/doc/UsingDoctest.md#top)
+* [Using Approval Tests With \[Boost\].UT](/doc/UsingUT.md#top)
+* [Supporting a new test framework](/doc/SupportingNewTestFramework.md#top)
+
+### Customising behaviour
 
 * [Reporters](/doc/Reporters.md#top)
-* Custom Comparators
-* Writers
-* Namers
+* [Custom Comparators](/doc/CustomComparators.md#top)
+* [Writers](/doc/Writers.md#top)
+* [Namers](/doc/Namers.md#top)
+* [Configuration](/doc/Configuration.md#top)
+* [All Customizations of Approval Tests](/doc/AllCustomizations.md#top)
 
-## Common Challenges
+### Common Challenges
 
 * Unstable output, e.g. with Dates and Times
 * Non-deterministic code
-* Multiple output files per test
+* [Multiple output files per test](/doc/MultipleOutputFilesPerTest.md#top)
 * Testing images
 * Embedded development
 
-## Common Scenarios
+### Common Scenarios
 
 * Non-graphical environments
-* Build Machines and Continuous Integration servers
+* [Build Machines and Continuous Integration servers](/doc/BuildMachinesAndCI.md#top)
 
-## Extras
 
+## Miscellaneous
+
+### Extras
+
+* [Frequently Asked Questions](/doc/FAQ.md#top)
+* [Utilities](/doc/Utilities.md#top)
+* [Videos](/doc/Videos.md#top)
 * [Troubleshooting](/doc/Troubleshooting.md#top)
 * 4 benefits of testing
     * Spec
@@ -91,7 +86,10 @@ Once you're up and running, consider the following reference material. -->
     * Regression
     * Granularity
 
-## Advanced Topics
+### Advanced Topics
 
-* [Supporting a new test framework](/doc/SupportingNewTestFramework.md#top)
 * [Contributing to ApprovalTests.cpp](/doc/Contributing.md#top)
+
+### Suggested Examples
+* [ApprovalTests](https://github.com/approvals/ApprovalTests.cpp/blob/master/tests/Catch2_Tests/ApprovalsTests.cpp)
+

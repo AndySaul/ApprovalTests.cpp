@@ -4,46 +4,85 @@
 #include <string>
 #include <functional>
 #include <exception>
-#include "FileApprover.h"
+#include "ApprovalTests/core/FileApprover.h"
 #include "reporters/DefaultReporter.h"
 #include "reporters/DefaultReporterDisposer.h"
-#include "reporters/Reporter.h"
+#include "ApprovalTests/core/Reporter.h"
 #include "namers/ApprovalTestNamer.h"
 #include "writers/ExistingFile.h"
 #include "namers/ExistingFileNamer.h"
 #include "namers/SubdirectoryDisposer.h"
+#include "namers/DefaultNamerDisposer.h"
 
+namespace ApprovalTests {
 class Approvals {
 private:
-    Approvals() {}
+    Approvals() = default;
 
-    ~Approvals() {}
+    ~Approvals() = default;
 
 public:
     static std::shared_ptr<ApprovalNamer> getDefaultNamer()
     {
-        return std::make_shared<ApprovalTestNamer>();
+        return DefaultNamerFactory::getDefaultNamer()();
     }
 
     static void verify(std::string contents, const Reporter &reporter = DefaultReporter()) {
-        StringWriter writer(contents);
-        ApprovalTestNamer namer;
-        FileApprover::verify(namer, writer, reporter);
+        verifyWithExtension(contents, ".txt", reporter);
+    }
+
+    static void verifyWithExtension(std::string contents, const std::string& fileExtensionWithDot, const Reporter &reporter = DefaultReporter()) {
+        StringWriter writer(contents, fileExtensionWithDot);
+        FileApprover::verify(*getDefaultNamer(), writer, reporter);
+    }
+
+    static void verify(const ApprovalWriter& writer, const Reporter &reporter = DefaultReporter())
+    {
+        FileApprover::verify(*getDefaultNamer(), writer, reporter);
     }
 
     template<typename T>
+    using IsNotDerivedFromWriter = typename std::enable_if<!std::is_base_of<ApprovalWriter, T>::value, int>::type;
+
+    template<
+            typename T,
+            typename = IsNotDerivedFromWriter<T>>
     static void verify(const T& contents, const Reporter &reporter = DefaultReporter()) {
         verify(StringUtils::toString(contents), reporter);
     }
 
-    template<typename T>
+    template<
+            typename T,
+            typename = IsNotDerivedFromWriter<T>>
+    static void verifyWithExtension(const T& contents, const std::string& fileExtensionWithDot, const Reporter &reporter = DefaultReporter()) {
+        verifyWithExtension(StringUtils::toString(contents), fileExtensionWithDot, reporter);
+    }
+
+    template<
+        typename T,
+        typename Function,
+        typename = Detail::EnableIfNotDerivedFromReporter<Function>>
     static void verify(const T& contents,
-                       std::function<void(const T&, std::ostream &)> converter,
+                       Function converter,
                        const Reporter &reporter = DefaultReporter())
     {
         std::stringstream s;
         converter(contents, s);
         verify(s.str(), reporter);
+    }
+
+    template<
+        typename T,
+        typename Function,
+        typename = Detail::EnableIfNotDerivedFromReporter<Function>>
+    static void verifyWithExtension(const T& contents,
+                       Function converter,
+                       const std::string& fileExtensionWithDot,
+                       const Reporter &reporter = DefaultReporter())
+    {
+        std::stringstream s;
+        converter(contents, s);
+        verifyWithExtension(s.str(), fileExtensionWithDot, reporter);
     }
 
     static void verifyExceptionMessage(
@@ -59,9 +98,9 @@ public:
         {
             message = e.what();
         }
-        Approvals::verify(message, reporter);
+        verify(message, reporter);
     }
-    
+
     template<typename Iterator>
     static void verifyAll(std::string header,
                           const Iterator &start, const Iterator &finish,
@@ -106,7 +145,7 @@ public:
         ExistingFileNamer namer(filePath);
         FileApprover::verify(namer, writer, reporter);
     }
-    
+
     static SubdirectoryDisposer useApprovalsSubdirectory(std::string subdirectory = "approval_tests")
     {
         return SubdirectoryDisposer(subdirectory);
@@ -122,6 +161,12 @@ public:
         return FrontLoadedReporterDisposer(reporter);
     }
 
+    static DefaultNamerDisposer useAsDefaultNamer(NamerCreator namerCreator)
+    {
+        return DefaultNamerDisposer(namerCreator);
+    }
+
 };
+}
 
 #endif

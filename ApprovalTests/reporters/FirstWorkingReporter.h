@@ -1,17 +1,18 @@
 #ifndef APPROVALTESTS_CPP_FIRSTWORKINGREPORTER_H
 #define APPROVALTESTS_CPP_FIRSTWORKINGREPORTER_H
 
-#include "Reporter.h"
+#include "ApprovalTests/core/Reporter.h"
 #include <memory>
 #include <vector>
 
+namespace ApprovalTests {
 class FirstWorkingReporter : public Reporter
 {
 private:
     std::vector< std::unique_ptr<Reporter> > reporters;
 public:
     // Note that FirstWorkingReporter takes ownership of the given Reporter objects
-    FirstWorkingReporter(std::vector<Reporter*> theReporters)
+    explicit FirstWorkingReporter(const std::vector<Reporter*>& theReporters)
     {
         for(auto r : theReporters)
         {
@@ -31,5 +32,6 @@ public:
         return false;
     }
 };
+}
 
 #endif //APPROVALTESTS_CPP_FIRSTWORKINGREPORTER_H

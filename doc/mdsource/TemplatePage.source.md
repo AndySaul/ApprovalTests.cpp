@@ -2,15 +2,7 @@
 
 # Put Title Here
 
-
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
-
-- [First Section Here](#first-section-here)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+toc
 
 ## First Section Here
 

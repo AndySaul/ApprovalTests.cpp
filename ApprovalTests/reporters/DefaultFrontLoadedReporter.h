@@ -1,16 +1,21 @@
 #ifndef APPROVALTESTS_CPP_DEFAULTFRONTLOADEDREPORTER_H
 #define APPROVALTESTS_CPP_DEFAULTFRONTLOADEDREPORTER_H
 
-#include "Reporter.h"
+#include "ApprovalTests/reporters/CIBuildOnlyReporter.h"
+#include "ApprovalTests/reporters/FirstWorkingReporter.h"
 
-//! Implementation detail of Approvals::useAsFrontLoadedReporter()
-class DefaultFrontLoadedReporter : public Reporter
+namespace ApprovalTests {
+class DefaultFrontLoadedReporter : public FirstWorkingReporter
 {
 public:
-    virtual bool report(std::string /*received*/, std::string /*approved*/) const override
+    DefaultFrontLoadedReporter() : FirstWorkingReporter(
+        {
+            new CIBuildOnlyReporter()
+        }
+    )
     {
-        return false;
     }
 };
+}
 
 #endif //APPROVALTESTS_CPP_DEFAULTFRONTLOADEDREPORTER_H

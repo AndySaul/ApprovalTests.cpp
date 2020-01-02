@@ -2,18 +2,8 @@
 
 # Supporting a new test framework
 
+toc
 
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
-
-- [Introduction](#introduction)
-- [Test Framework Requirements](#test-framework-requirements)
-- [Steps to add support](#steps-to-add-support)
-- [Examples](#examples)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Introduction
 
@@ -26,8 +16,8 @@ If your test framework is not already supported, this section offers help to add
 ApprovalTests.cpp can be made to work with any test framework that supplies the following:
 
 * The current test's name 
-* The current test's source file (with correct case of filename) 
-* Ability to report unexpected exceptions as test failures 
+* The current test's full source file path (with correct case of filename) 
+* Ability to report unexpected exceptions as test failures, including reporting the text in `exception.what()` , and ideally also the exception type.
 
 ## Steps to add support
 
@@ -38,18 +28,25 @@ ApprovalTests.cpp can be made to work with any test framework that supplies the 
 
 ## Examples
 
-This is perhaps best understood by reviewing the implementations for frameworks that are already supported:
+This is perhaps best understood by reviewing the implementations for frameworks that are already supported - see [/ApprovalTests/integrations/](/ApprovalTests/integrations/).
  
-* [Catch2Approvals.h](/ApprovalTests/Catch2Approvals.h)
-* [GoogleTestApprovals.h](/ApprovalTests/GoogleTestApprovals.h)
-* [OkraApprovals.h](/ApprovalTests/OkraApprovals.h)
-
 The following lines can be ignored in the above files - they are for this project's release process:
 
 ```cpp
 // <SingleHpp unalterable>
 // </SingleHpp>
 ``` 
+
+## Adding new framework to documentation
+
+1. Add a new file about the customisation, such as [UsingCatch](/doc/UsingCatch.md#top)
+2. Record the new framework support in:
+    * The Help message in [ApprovalTestNamer.h](/ApprovalTests/namers/ApprovalTestNamer.h)
+    * [GettingStarted](/doc/GettingStarted.md#top) - see "Details" list, and "Choosing a testing framework"
+    * [User Guide](/doc/README.md#test-frameworks) - see "Test Frameworks" section
+    * [Setup](/doc/Setup.md#top) - see the bullet list starting "Set up your `main()`"
+    * Other documentation links: see [Definition of Done](/doc/Contributing.md#definition-of-done)
+
 
 ---
 

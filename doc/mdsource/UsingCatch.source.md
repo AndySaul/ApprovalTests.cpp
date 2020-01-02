@@ -3,18 +3,8 @@
 # Using Approval Tests With Catch
 
 
+toc
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
-
-- [Getting Started With Catch 1 and 2](#getting-started-with-catch-1-and-2)
-  - [Starter Project](#starter-project)
-  - [New Project](#new-project)
-  - [Existing Project - with CATCH_CONFIG_MAIN](#existing-project---with-catch_config_main)
-  - [Existing Project - with your main()](#existing-project---with-your-main)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 ## Getting Started With Catch 1 and 2
@@ -24,6 +14,10 @@ The [Catch2](https://github.com/catchorg/Catch2) test framework works well with 
 This section describes the various ways of using Approval Tests with Catch 2.
 
 These steps also work with the earlier version, Catch 1, which is on the [Catch 1.x branch](https://github.com/catchorg/Catch2/tree/Catch1.x), and is still provided for those on pre-C++11 compilers. (Please note that the Approval Tests library requires C++11 or newer, however). 
+
+Approval Tests requires that a file called `catch.hpp` is found.
+
+(Before v7.0.0, it required `Catch.hpp`)
 
 ### Starter Project
 
@@ -49,15 +43,15 @@ If you have a Catch (1 or 2) project with your own `main.cpp` that contains the 
 #include "catch.hpp"
 ```
 
+<!-- todo: document use of sections -->
+
 ### Existing Project - with your main()
 
 If you have [supplied your own `main()` for Catch](https://github.com/catchorg/Catch2/blob/master/docs/own-main.md#top), you will need to teach it how to supply test names to Approval Tests.
 
-There is not yet a streamlined way of doing this.
+You should make the following additions to your own source file that contains `main()`.  
 
-For now, please see the code in [ApprovalTests/Catch2Approvals.h](/ApprovalTests/Catch2Approvals.h) for the code you will need to add to your `main.cpp`.
-
-If it would be helpful for us to provide an easier way to do this, please let us know, via the contact details in [Contributing to ApprovalTests.cpp](/doc/Contributing.md#top). 
+snippet: catch_existing_main
 
 
 ---

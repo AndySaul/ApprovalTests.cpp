@@ -3,18 +3,8 @@
 # String conversions
 
 
+toc
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
-
-- [How](#how)
-- [Design](#design)
-  - [Composability](#composability)
-  - [Lists](#lists)
-  - [Tools](#tools)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 When you use Approval tests, the results of the things you are testing are going to be stored on disk. It is good if you can diff the files, to gain an understanding of what is created and how they change. Mainly this is done by creating strings.
 
@@ -76,11 +66,11 @@ snippet: verify_list
 
 Notice how this:
 
-snippet: ApprovalTests_Catch2_Tests/approval_tests/ToStringWrapperExample.MultipleLinesCanBeHardToRead.approved.txt
+snippet: ToStringWrapperExample.MultipleLinesCanBeHardToRead.approved.txt
 
 compares to this:
 
-snippet: ApprovalTests_Catch2_Tests/approval_tests/ToStringWrapperExample.AlternativeFormattingCanBeEasyToRead.approved.txt
+snippet: ToStringWrapperExample.AlternativeFormattingCanBeEasyToRead.approved.txt
 
 ### Tools
 

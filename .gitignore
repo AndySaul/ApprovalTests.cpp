@@ -1,8 +1,6 @@
-cmake-build-debug/
-cmake-build-release/
-cmake-build-vs/
-cmake-clang-release/
-cmake-gcc-release/
+cmake-build-*/
+cmake-clang-*/
+cmake-gcc-*/
 build/releases
 *.received.*
 .idea
@@ -11,3 +9,9 @@ doc/html/
 /.vscode/
 *.runsettings
 CMakeLists.txt.user
+*.bak
+*.source.md-e
+.DS_Store
+[Oo]ut/build
+*.swp
+/CMakeSettings.json

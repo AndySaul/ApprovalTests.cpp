@@ -1,19 +1,15 @@
 BUGS
 
-. don't include Catch2 tags (like [!shouldfail]) in output filenames
 . arguments member in DiffInfo is unused after construction - beware - will need to handle arguments differently on cygwin (which currently assumes all arguments are file paths)
 
 IMPROVE USABILITY OF CURRENT FEATURES
 
-. try using a custom namer in C++ e.g. to write out actual and expected in parallel directories, to allow diffing the whole folder - Python project has verify_with_namer()
-. add an easy way to produce multiple output files from one test - perhaps APPROVALS_SECTION{...}, like Catch2's SECTION{...} or DYNAMIC_SECTION{...}
-. make it easy to add approvals to existing catch2 tests
+. use a disposer for GoogleConfiguration::addIgnorableTestCaseNameSuffix() - to make it reversible
 
 NEW FEATURES
 
 . add a non-gui reporter, e.g. for use in CI systems
 . catch reporter
-. UpdateApprovedReporter - that moves received to approved, to allow for reviewing in version control and then either committing or reverting
 . tortoise git diff reporter
 . maps
 . reports
@@ -27,15 +23,19 @@ NEW FEATURES
 TESTS
 
 . add tests of images (and verify that this works in Araxis Merge too - use Type::TEXT_AND_IMAGE)
+. try using C++17's filesystem to simplify tests - may need to support <experimental/filesystem> too - and may need -lstdc++fs
 
 DOCUMENTATION
 
 . short video intro - from downloading to running the first test - like https://www.youtube.com/watch?v=jeDecsGVbc4
 . document use of converter objects - see comment in #6
 . hook Simon Cropp's code mechanism into github pre-commit mechanism
-. document how to test file types that are not character-for-character equivalent
+
 RELEASES
 
+. try Markdown Navigator to allow checkboxes in build steps
+. get cmake to generate build from command line (to remove requirement that CLion needs to have built starter project)
+. see if we can streamline setup of relnotes files for next release
 . include licence in released header
 
 FORMATTING OF CODE
@@ -46,15 +46,16 @@ FORMATTING OF CODE
 
 CODE QUALITY
 
+. Clean up CIBuildOnlyReporter
 . run through Qt Creator analysis tools
 . memory leaks in our tests
 
 ENVIRONMENT AND BUILDS
 
-. Add CI builds for clang
+. fix Appveyor builds for Starter Project
 . set up a git tab policy
 . fix issues in source code with eol warnings in clion on PC (little red crlf warnings)
 
 FUTURE DEVELOPMENT
 
-. review directory and file structure of other popular C++ testing libraries, to look for ways to improve the structure of this project, e.g. add a single header file in source that mimics the released single header, e.g. put Catch and Google and Okra headers into an integration folder???
+. review directory and file structure of other popular C++ testing libraries, to look for ways to improve the structure of this project, e.g. add a single header file in source that mimics the released single header, e.g. put Catch and Google headers into an integration folder???

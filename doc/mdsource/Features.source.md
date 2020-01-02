@@ -4,55 +4,83 @@
 
 
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Contents**
+toc
 
-- [Customizing Google Tests Approval File Names](#customizing-google-tests-approval-file-names)
-- [Blocking Reporter](#blocking-reporter)
-- [Machine Blockers](#machine-blockers)
-- [Front Loaded Reporters](#front-loaded-reporters)
-- [Using sub-directories for approved files](#using-sub-directories-for-approved-files)
+## vNext
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+## v.7.0.0
 
-## Customizing Google Tests Approval File Names
+See the [v.7.0.0 milestone](https://github.com/approvals/ApprovalTests.cpp/milestone/2?closed=1) for the full list of changes.
+
+### Support for \[Boost\].UT test framework
+
+See [Using Approval Tests With \[Boost\].UT](/doc/UsingUT.md#top).
+
+## v.6.0.0
+
+### Existing Catch Project - with your main()
+
+See [Existing Project - with your main()](/doc/UsingCatch.md#existing-project---with-your-main).
+
+## v.5.1.0
+
+### Continuous Integration Builds
+
+Approval tests will now [never launch any reporters on supported Continuous Integration machines](/doc/BuildMachinesAndCI.md#top).
+
+### Approving multiple files in one test
+
+See [Approving multiple files in one test](/doc/MultipleOutputFilesPerTest.md#approving-multiple-files-in-one-test)
+
+### ExceptionCollector
+
+See [ExceptionCollector](/doc/Utilities.md#exceptioncollector)
+
+### Using custom writers
+
+See [Using custom writers](/doc/Writers.md#using-custom-writers)
+
+### Using custom filename extensions
+
+See [Using custom filename extensions](/doc/Writers.md#using-custom-filename-extensions)
+
+## v.5.0.0
+
+### Multiple output files per test
+
+See [Multiple output files per test](/doc/MultipleOutputFilesPerTest.md#top).
+
+### SeparateApprovedAndReceivedDirectoriesNamer
+
+See [SeparateApprovedAndReceivedDirectoriesNamer](/doc/Namers.md#separateapprovedandreceiveddirectoriesnamer)
+
+### Registering a Custom Namer
+
+See [Registering a Custom Namer](/doc/Namers.md#registering-a-custom-namer)
+
+## Before v.5.0.0
+
+### Customizing Google Tests Approval File Names
 
 See [Using Approval Tests With Google Tests](/doc/UsingGoogleTests.md#customizing-google-tests-approval-file-names)
 
-## Blocking Reporter
+### Blocking Reporter
 
-Blocking reporters are a simple class, designed for use with FrontLoadedReporters, to prevent launching of reporters in certain environments.
+See [Blocking Reporters](/doc/Reporters.md#blocking-reporters)
 
-snippet: do_not_report_on_ci
-
-## Machine Blockers
+### Machine Blockers
 
 Sometimes you will want tests to only run on certain machines. Machine blockers are a great way to do this.
 
 snippet: machine_specific_test_runner
 
-## Front Loaded Reporters
+### Front Loaded Reporters
 
-Other times, you will want to run the tests on all machines, but only report if certain conditions are true. Front loaded reporters allow a mechanism to jump in front of the standard Reporter path, and divert early.
+See [Front Loaded Reporters](/doc/Reporters.md#front-loaded-reporters)
 
-Here is an example of not launching any reporters of you are on the CI machine.
+### Using sub-directories for approved files
 
-snippet: do_not_report_on_ci
-
-Once you have added that, even calling approvals with a specific Reporter will not launch it on the CI system (but will for all other systems). For example:
-
-snippet: basic_approval_with_reporter 
-
-## Using sub-directories for approved files
-
-If you have a lot of approval files, you might want to put them in a subdirectory, to prevent them cluttering up your source files. You can do this at a global or per-test level, by adding the line:
-
-snippet: use_subdirectory_in_main
-
-The return value will restore the original directory when the object destructs. Because of this, if you do not store the result in a variable, it will immediately undo itself by the end of the line.
-
-This mechanism allows you to select a different sub-directory in individual tests.
+See [Using sub-directories for approved files](/doc/Configuration.md#using-sub-directories-for-approved-files)
 
 
 ---

@@ -1,12 +1,13 @@
 #ifndef APPROVALTESTS_CPP_BLOCKINGREPORTER_H
 #define APPROVALTESTS_CPP_BLOCKINGREPORTER_H
 
-#include "Reporter.h"
-#include "../SystemUtils.h"
+#include "ApprovalTests/core/Reporter.h"
 #include "../utilities/MachineBlocker.h"
 
 #include <memory>
+#include <utility>
 
+namespace ApprovalTests {
 class BlockingReporter : public Reporter
 {
 private:
@@ -15,7 +16,7 @@ private:
     BlockingReporter() = delete;
 
 public:
-    BlockingReporter( std::shared_ptr<Blocker> blocker ) : blocker(blocker)
+    explicit BlockingReporter( std::shared_ptr<Blocker> blocker ) : blocker(std::move(blocker))
     {
     }
 
@@ -36,5 +37,6 @@ public:
         return blocker->isBlockingOnThisMachine();
     }
 };
+}
 
 #endif //APPROVALTESTS_CPP_BLOCKINGREPORTER_H

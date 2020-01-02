@@ -1,23 +1,25 @@
 #ifndef APPROVALTESTS_CPP_EXISTINGFILENAMER_H
 #define APPROVALTESTS_CPP_EXISTINGFILENAMER_H
 
-#include "ApprovalNamer.h"
-#include "ApprovalTestNamer.h"
+#include <utility>
+#include "ApprovalTests/core/ApprovalNamer.h"
+#include "DefaultNamerFactory.h"
 
+namespace ApprovalTests {
 class ExistingFileNamer: public ApprovalNamer{
-    ApprovalTestNamer namer;
     std::string filePath;
 public:
-    ExistingFileNamer(std::string filePath): filePath(filePath){
+    explicit ExistingFileNamer(std::string filePath): filePath(std::move(filePath)){
 
     }
-    virtual string getApprovedFile(string extensionWithDot) {
-        return namer.getApprovedFile(extensionWithDot);
+    virtual std::string getApprovedFile(std::string extensionWithDot) const override {
+        return DefaultNamerFactory::getDefaultNamer()()->getApprovedFile(extensionWithDot);
     }
-    virtual string getReceivedFile(string /*extensionWithDot*/) {
+    virtual std::string getReceivedFile(std::string /*extensionWithDot*/) const override {
         return filePath;
     }
 
 };
+}
 
 #endif //APPROVALTESTS_CPP_EXISTINGFILENAMER_H

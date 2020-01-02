@@ -2,10 +2,10 @@
 #define APPROVALTESTS_CPP_MACHINEBLOCKER_H
 
 #include "Blocker.h"
-#include "../SystemUtils.h"
+#include <utility>
+#include "SystemUtils.h"
 
-#include <memory>
-
+namespace ApprovalTests {
 class MachineBlocker : public Blocker
 {
 private:
@@ -15,7 +15,7 @@ private:
     MachineBlocker() = delete;
 
 public:
-    MachineBlocker( const std::string& machineName, bool block ) : machineName(machineName), block(block)
+    MachineBlocker(std::string machineName, bool block ) : machineName(std::move(machineName)), block(block)
     {
     }
 
@@ -35,6 +35,6 @@ public:
         return isMachine == block;
     }
 };
-
+}
 
 #endif //APPROVALTESTS_CPP_MACHINEBLOCKER_H

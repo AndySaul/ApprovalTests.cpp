@@ -1,10 +1,12 @@
 #ifndef APPROVALTESTS_CPP_COMMANDREPORTER_H
 #define APPROVALTESTS_CPP_COMMANDREPORTER_H
 
-#include "CommandLauncher.h"
-#include "../FileUtils.h"
-#include "Reporter.h"
+#include <utility>
+#include "ApprovalTests/launchers/CommandLauncher.h"
+#include "ApprovalTests/utilities/FileUtils.h"
+#include "ApprovalTests/core/Reporter.h"
 
+namespace ApprovalTests {
 // Generic reporter to launch arbitrary command
 class CommandReporter : public Reporter {
 private:
@@ -13,7 +15,7 @@ private:
 
 protected:
     CommandReporter(std::string command, CommandLauncher *launcher)
-            : cmd(command), l(launcher) {
+            : cmd(std::move(command)), l(launcher) {
     }
 
 public:
@@ -31,4 +33,5 @@ public:
         return fullCommand;
     }
 };
+}
 #endif //APPROVALTESTS_CPP_COMMANDREPORTER_H

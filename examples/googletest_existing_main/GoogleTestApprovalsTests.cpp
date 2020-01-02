@@ -3,12 +3,12 @@
 
 TEST(GoogleTestApprovalsTests, TestStreamableObject)
 {
-    Approvals::verify(42);
+    ApprovalTests::Approvals::verify(42);
 }
 
 TEST(GoogleTestApprovalsTests, SpecificReporter)
 {
-    // startcode basic_approval_with_reporter
-    Approvals::verify("text to be verified", Windows::AraxisMergeReporter());
-    // endcode
+    // begin-snippet: basic_approval_with_reporter
+    ApprovalTests::Approvals::verify("text to be verified", ApprovalTests::Windows::AraxisMergeReporter());
+    // end-snippet
 }

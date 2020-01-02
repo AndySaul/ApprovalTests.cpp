@@ -5,9 +5,20 @@ if(NOT DEFINED PROJECT_NAME)
     set(NOT_SUBPROJECT ON)
 endif()
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
 project(ApprovalTests.cpp)
 add_subdirectory(ApprovalTests)
 
+set(CMAKE_VERBOSE_MAKEFILE off)
+
+option(APPROVAL_TESTS_ENABLE_CODE_COVERAGE "Enable coverage reporting for selected tests" OFF)
+
+if(APPROVAL_TESTS_ENABLE_CODE_COVERAGE)
+    message(STATUS "Enable Code Coverage")
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+endif()
 
 if (NOT_SUBPROJECT)
     # Download and unpack googletest at configure time
@@ -26,11 +37,9 @@ if (NOT_SUBPROJECT)
     # and gmock_main
     add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
                      "${CMAKE_BINARY_DIR}/googletest-build")
-    include_directories(lib) # for Catch
 
     enable_testing()
-    add_subdirectory(ApprovalTests_Catch1_Tests)
-    add_subdirectory(ApprovalTests_Catch2_Tests)
-    add_subdirectory(ApprovalTests_GoogleTest_Tests)
+    add_subdirectory(third_party)
+    add_subdirectory(tests)
     add_subdirectory(examples)
 endif()

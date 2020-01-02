@@ -1,10 +1,9 @@
 #ifndef APPROVALTESTS_CPP_QUIETREPORTER_H
 #define APPROVALTESTS_CPP_QUIETREPORTER_H
 
-#include "Reporter.h"
-#include <memory>
-#include <vector>
+#include "ApprovalTests/core/Reporter.h"
 
+namespace ApprovalTests {
 // A reporter that does nothing. Failing tests will still fail, but nothing will be launched.
 class QuietReporter : public Reporter
 {
@@ -14,5 +13,6 @@ public:
         return true;
     }
 };
+}
 
 #endif //APPROVALTESTS_CPP_QUIETREPORTER_H

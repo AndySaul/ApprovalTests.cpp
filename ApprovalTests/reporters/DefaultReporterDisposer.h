@@ -3,8 +3,9 @@
 
 #include "DefaultReporterFactory.h"
 
+namespace ApprovalTests {
 //! Implementation detail of Approvals::useAsDefaultReporter()
-class DefaultReporterDisposer
+class APPROVAL_TESTS_NO_DISCARD DefaultReporterDisposer
 {
 private:
     std::shared_ptr<Reporter> previous_result;
@@ -20,5 +21,6 @@ public:
         DefaultReporterFactory::setDefaultReporter(previous_result);
     }
 };
+}
 
 #endif //APPROVALTESTS_CPP_DEFAULTREPORTERDISPOSER_H

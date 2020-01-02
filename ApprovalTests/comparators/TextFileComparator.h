@@ -1,8 +1,9 @@
 #ifndef APPROVALTESTS_CPP_TEXTFILECOMPARATOR_H
 #define APPROVALTESTS_CPP_TEXTFILECOMPARATOR_H
 
-#include "ApprovalComparator.h"
+#include "ApprovalTests/core/ApprovalComparator.h"
 
+namespace ApprovalTests {
 class TextFileComparator : public ApprovalComparator
 {
 public:
@@ -20,7 +21,7 @@ public:
     }
 
     virtual bool contentsAreEquivalent(std::string receivedPath,
-                                       std::string approvedPath) const
+                                       std::string approvedPath) const override
     {
         std::ifstream astream(approvedPath.c_str(),
                               std::ios::binary | std::ifstream::in);
@@ -38,4 +39,5 @@ public:
         return true;
     }
 };
+}
 #endif //APPROVALTESTS_CPP_TEXTFILECOMPARATOR_H
