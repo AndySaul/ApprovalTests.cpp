@@ -14,7 +14,8 @@ TEST_CASE("ItCanGiveYouTheSpecName")
         REQUIRE(namer.getTestName() == "ItCanGiveYouTheSpecName.andSectionNames");
         SUBCASE("andEvenMoreSectionNames")
         {
-            REQUIRE(namer.getTestName() == "ItCanGiveYouTheSpecName.andSectionNames.andEvenMoreSectionNames");
+            REQUIRE(namer.getTestName() == "ItCanGiveYouTheSpecName.andSectionNames."
+                                           "andEvenMoreSectionNames");
         }
     }
 }
@@ -22,7 +23,7 @@ TEST_CASE("ItCanGiveYouTheSpecName")
 TEST_CASE("ItCanGiveYouTheTestFileName")
 {
     ApprovalTestNamer namer;
-    REQUIRE(namer.getFileName() == "DocTestNamerTests");
+    REQUIRE(namer.getSourceFileName() == "DocTestNamerTests");
 }
 
 TEST_CASE("It can verify tests with spaces")

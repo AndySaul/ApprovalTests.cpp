@@ -1,111 +1,113 @@
-#ifndef APPROVALTESTS_CPP_WINDOWSREPORTERS_H
-#define APPROVALTESTS_CPP_WINDOWSREPORTERS_H
+#pragma once
 
-#include "DiffPrograms.h"
 #include "FirstWorkingReporter.h"
 #include "GenericDiffReporter.h"
 
-namespace ApprovalTests {
-namespace Windows {
+namespace ApprovalTests
+{
+    namespace Windows
+    {
 
-    class VisualStudioCodeReporter : public GenericDiffReporter {
-    public:
-        VisualStudioCodeReporter() : GenericDiffReporter(DiffPrograms::Windows::VS_CODE()) {}
-    };
-
-    // ----------------------- Beyond Compare ----------------------------------
-    class BeyondCompare3Reporter : public GenericDiffReporter {
-    public:
-        BeyondCompare3Reporter() : GenericDiffReporter(DiffPrograms::Windows::BEYOND_COMPARE_3()) {}
-    };
-
-    class BeyondCompare4Reporter : public GenericDiffReporter {
-    public:
-        BeyondCompare4Reporter() : GenericDiffReporter(DiffPrograms::Windows::BEYOND_COMPARE_4()) {}
-    };
-
-    class BeyondCompareReporter : public FirstWorkingReporter {
-    public:
-        BeyondCompareReporter() : FirstWorkingReporter({new BeyondCompare4Reporter(), new BeyondCompare3Reporter()}) {
-        }
-    };
-
-    // ----------------------- Tortoise SVN ------------------------------------
-    class TortoiseImageDiffReporter : public GenericDiffReporter {
-    public:
-        TortoiseImageDiffReporter() : GenericDiffReporter(DiffPrograms::Windows::TORTOISE_IMAGE_DIFF()) {}
-    };
-
-    class TortoiseTextDiffReporter : public GenericDiffReporter {
-    public:
-        TortoiseTextDiffReporter() : GenericDiffReporter(DiffPrograms::Windows::TORTOISE_TEXT_DIFF()) {}
-    };
-
-    class TortoiseDiffReporter : public FirstWorkingReporter {
-    public:
-        TortoiseDiffReporter() : FirstWorkingReporter(
-                {new TortoiseTextDiffReporter(), new TortoiseImageDiffReporter()}) {
-        }
-    };
-
-    // ----------------------- Tortoise Git ------------------------------------
-    class TortoiseGitTextDiffReporter : public GenericDiffReporter {
+        class VisualStudioCodeReporter : public GenericDiffReporter
+        {
         public:
-        TortoiseGitTextDiffReporter() : GenericDiffReporter(DiffPrograms::Windows::TORTOISE_GIT_TEXT_DIFF()) {}
-    };
+            VisualStudioCodeReporter();
+        };
 
-    class TortoiseGitImageDiffReporter : public GenericDiffReporter {
+        // ----------------------- Beyond Compare ----------------------------------
+        class BeyondCompare3Reporter : public GenericDiffReporter
+        {
         public:
-        TortoiseGitImageDiffReporter() : GenericDiffReporter(DiffPrograms::Windows::TORTOISE_GIT_IMAGE_DIFF()) {}
-    };
+            BeyondCompare3Reporter();
+        };
 
-    class TortoiseGitDiffReporter : public FirstWorkingReporter {
-    public:
-        TortoiseGitDiffReporter() : FirstWorkingReporter(
-                {new TortoiseGitTextDiffReporter(), new TortoiseGitImageDiffReporter()}) {
-        }
-    };
+        class BeyondCompare4Reporter : public GenericDiffReporter
+        {
+        public:
+            BeyondCompare4Reporter();
+        };
 
-    // -------------------------------------------------------------------------
-    class WinMergeReporter : public GenericDiffReporter {
-    public:
-        WinMergeReporter() : GenericDiffReporter(DiffPrograms::Windows::WIN_MERGE_REPORTER()) {}
-    };
+        class BeyondCompareReporter : public FirstWorkingReporter
+        {
+        public:
+            BeyondCompareReporter();
+        };
 
-    class AraxisMergeReporter : public GenericDiffReporter {
-    public:
-        AraxisMergeReporter() : GenericDiffReporter(DiffPrograms::Windows::ARAXIS_MERGE()) {}
-    };
+        // ----------------------- Tortoise SVN ------------------------------------
+        class TortoiseImageDiffReporter : public GenericDiffReporter
+        {
+        public:
+            TortoiseImageDiffReporter();
+        };
 
-    class CodeCompareReporter : public GenericDiffReporter {
-    public:
-        CodeCompareReporter() : GenericDiffReporter(DiffPrograms::Windows::CODE_COMPARE()) {}
-    };
+        class TortoiseTextDiffReporter : public GenericDiffReporter
+        {
+        public:
+            TortoiseTextDiffReporter();
+        };
 
-    class KDiff3Reporter : public GenericDiffReporter {
-    public:
-        KDiff3Reporter() : GenericDiffReporter(DiffPrograms::Windows::KDIFF3()) {}
-    };
+        class TortoiseDiffReporter : public FirstWorkingReporter
+        {
+        public:
+            TortoiseDiffReporter();
+        };
 
-    class WindowsDiffReporter : public FirstWorkingReporter {
-    public:
-        WindowsDiffReporter() : FirstWorkingReporter(
-                {
-                        // begin-snippet: windows_diff_reporters
-                        new TortoiseDiffReporter(), // Note that this uses Tortoise SVN Diff
-                        new TortoiseGitDiffReporter(),
-                        new BeyondCompareReporter(),
-                        new WinMergeReporter(),
-                        new AraxisMergeReporter(),
-                        new CodeCompareReporter(),
-                        new KDiff3Reporter(),
-                        new VisualStudioCodeReporter(),
-                        // end-snippet
-                }
-        ) {
-        }
-    };
+        // ----------------------- Tortoise Git ------------------------------------
+        class TortoiseGitTextDiffReporter : public GenericDiffReporter
+        {
+        public:
+            TortoiseGitTextDiffReporter();
+        };
+
+        class TortoiseGitImageDiffReporter : public GenericDiffReporter
+        {
+        public:
+            TortoiseGitImageDiffReporter();
+        };
+
+        class TortoiseGitDiffReporter : public FirstWorkingReporter
+        {
+        public:
+            TortoiseGitDiffReporter();
+        };
+
+        // -------------------------------------------------------------------------
+        class WinMergeReporter : public GenericDiffReporter
+        {
+        public:
+            WinMergeReporter();
+        };
+
+        class AraxisMergeReporter : public GenericDiffReporter
+        {
+        public:
+            AraxisMergeReporter();
+        };
+
+        class CodeCompareReporter : public GenericDiffReporter
+        {
+        public:
+            CodeCompareReporter();
+        };
+
+        class SublimeMergeReporter : public GenericDiffReporter
+        {
+        public:
+            SublimeMergeReporter();
+        };
+
+        class KDiff3Reporter : public GenericDiffReporter
+        {
+        public:
+            KDiff3Reporter();
+        };
+
+        class WindowsDiffReporter : public FirstWorkingReporter
+        {
+        public:
+            WindowsDiffReporter();
+
+            bool report(std::string received, std::string approved) const override;
+        };
+    }
 }
-}
-
-#endif //APPROVALTESTS_CPP_WINDOWSREPORTERS_H

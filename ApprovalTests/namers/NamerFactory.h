@@ -1,19 +1,13 @@
-#ifndef APPROVALTESTS_CPP_NAMERFACTORY_H
-#define APPROVALTESTS_CPP_NAMERFACTORY_H
+#pragma once
 
-#include "ApprovalTestNamer.h"
 #include "SectionNameDisposer.h"
 
 #include <string>
 
-namespace ApprovalTests {
-struct NamerFactory
+namespace ApprovalTests
 {
-    static SectionNameDisposer appendToOutputFilename(const std::string& sectionName)
+    struct NamerFactory
     {
-        return SectionNameDisposer(ApprovalTestNamer::currentTest(), sectionName);
-    }
-};
+        static SectionNameDisposer appendToOutputFilename(const std::string& sectionName);
+    };
 }
-
-#endif //APPROVALTESTS_CPP_NAMERFACTORY_H

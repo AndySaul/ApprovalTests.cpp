@@ -1,24 +1,14 @@
-#ifndef APPROVALTESTS_CPP_AUTOAPPROVEIFMISSINGREPORTER_H
-#define APPROVALTESTS_CPP_AUTOAPPROVEIFMISSINGREPORTER_H
+#pragma once
 
 #include "ApprovalTests/core/Reporter.h"
 #include "AutoApproveReporter.h"
 #include "ApprovalTests/utilities/FileUtils.h"
 
-namespace ApprovalTests {
-class AutoApproveIfMissingReporter : public Reporter
+namespace ApprovalTests
 {
-public:
-    bool report(std::string received, std::string approved) const override
+    class AutoApproveIfMissingReporter : public Reporter
     {
-        if (FileUtils::fileExists(approved))
-        {
-            return false;
-        }
-
-        return AutoApproveReporter().report(received, approved);
-    }
-};
+    public:
+        bool report(std::string received, std::string approved) const override;
+    };
 }
-
-#endif //APPROVALTESTS_CPP_AUTOAPPROVEIFMISSINGREPORTER_H

@@ -1,47 +1,27 @@
-#ifndef APPROVALTESTS_CPP_GOOGLECUSTOMIZATIONSFACTORY_H
-#define APPROVALTESTS_CPP_GOOGLECUSTOMIZATIONSFACTORY_H
+#pragma once
 
 #include "ApprovalTests/utilities/StringUtils.h"
+#include "ApprovalTests/utilities/Macros.h"
 
 #include <vector>
 #include <functional>
 #include <string>
 
-namespace ApprovalTests {
-class GoogleCustomizationsFactory
+namespace ApprovalTests
 {
-public:
-    using Comparator = std::function<bool(const std::string&, const std::string&)>;
-private:
-    using ComparatorContainer = std::vector< Comparator >;
-    static ComparatorContainer& comparatorContainer()
+    class GoogleCustomizationsFactory
     {
-        static ComparatorContainer container;
-        if (container.empty())
-        {
-            auto exactNameMatching = [](const std::string& testFileNameWithExtension, const std::string& testCaseName)
-            {
-                return StringUtils::contains(testFileNameWithExtension, testCaseName + ".");
-            };
-            container.push_back( exactNameMatching );
-        }
-        return container;
-    }
+    public:
+        using Comparator = std::function<bool(const std::string&, const std::string&)>;
 
-public:
-    static ComparatorContainer getEquivalencyChecks()
-    {
-        return comparatorContainer();
-    }
+    private:
+        using ComparatorContainer = std::vector<Comparator>;
+        static ComparatorContainer& comparatorContainer();
 
-    APPROVAL_TESTS_NO_DISCARD static bool addTestCaseNameRedundancyCheck(const Comparator& comparator)
-    {
-        comparatorContainer().push_back(comparator);
-        return true;
-    }
-    
+    public:
+        static ComparatorContainer getEquivalencyChecks();
 
-};
+        APPROVAL_TESTS_NO_DISCARD static bool
+        addTestCaseNameRedundancyCheck(const Comparator& comparator);
+    };
 }
-
-#endif //APPROVALTESTS_CPP_GOOGLECUSTOMIZATIONSFACTORY_H

@@ -1,65 +1,82 @@
-#ifndef APPROVALTESTS_CPP_MACREPORTERS_H
-#define APPROVALTESTS_CPP_MACREPORTERS_H
+#pragma once
 
-#include "DiffPrograms.h"
 #include "GenericDiffReporter.h"
 #include "FirstWorkingReporter.h"
 
-namespace ApprovalTests {
-namespace Mac {
-    class DiffMergeReporter : public GenericDiffReporter {
-    public:
-        DiffMergeReporter() : GenericDiffReporter(DiffPrograms::Mac::DIFF_MERGE()) {}
-    };
+namespace ApprovalTests
+{
+    namespace Mac
+    {
+        class DiffMergeReporter : public GenericDiffReporter
+        {
+        public:
+            DiffMergeReporter();
+        };
 
-    class VisualStudioCodeReporter : public GenericDiffReporter {
-    public:
-        VisualStudioCodeReporter() : GenericDiffReporter(DiffPrograms::Mac::VS_CODE()) {}
-    };
+        // begin-snippet: add_reporter_class_header
+        class AraxisMergeReporter : public GenericDiffReporter
+        {
+        public:
+            AraxisMergeReporter();
+        };
+        // end-snippet
 
-    class BeyondCompareReporter : public GenericDiffReporter {
-    public:
-        BeyondCompareReporter() : GenericDiffReporter(DiffPrograms::Mac::BEYOND_COMPARE()) {}
-    };
+        class VisualStudioCodeReporter : public GenericDiffReporter
+        {
+        public:
+            VisualStudioCodeReporter();
+        };
 
-    class KaleidoscopeReporter : public GenericDiffReporter {
-    public:
-        KaleidoscopeReporter() : GenericDiffReporter(DiffPrograms::Mac::KALEIDOSCOPE()) {}
-    };
+        class BeyondCompareReporter : public GenericDiffReporter
+        {
+        public:
+            BeyondCompareReporter();
+        };
 
-    class KDiff3Reporter : public GenericDiffReporter {
-    public:
-        KDiff3Reporter() : GenericDiffReporter(DiffPrograms::Mac::KDIFF3()) {}
-    };
+        class KaleidoscopeReporter : public GenericDiffReporter
+        {
+        public:
+            KaleidoscopeReporter();
+        };
 
-    class P4MergeReporter : public GenericDiffReporter {
-    public:
-        P4MergeReporter() : GenericDiffReporter(DiffPrograms::Mac::P4MERGE()) {}
-    };
+        class SublimeMergeReporter : public GenericDiffReporter
+        {
+        public:
+            SublimeMergeReporter();
+        };
 
-    class TkDiffReporter : public GenericDiffReporter {
-    public:
-        TkDiffReporter() : GenericDiffReporter(DiffPrograms::Mac::TK_DIFF()) {}
-    };
+        class KDiff3Reporter : public GenericDiffReporter
+        {
+        public:
+            KDiff3Reporter();
+        };
 
-    class MacDiffReporter : public FirstWorkingReporter {
-    public:
-        MacDiffReporter() : FirstWorkingReporter(
-                {
-                        // begin-snippet: mac_diff_reporters
-                        new BeyondCompareReporter(),
-                        new DiffMergeReporter(),
-                        new KaleidoscopeReporter(),
-                        new P4MergeReporter(),
-                        new KDiff3Reporter(),
-                        new TkDiffReporter(),
-                        new VisualStudioCodeReporter()
-                        // end-snippet
-                }
-        ) {
-        }
-    };
+        class P4MergeReporter : public GenericDiffReporter
+        {
+        public:
+            P4MergeReporter();
+        };
+
+        class TkDiffReporter : public GenericDiffReporter
+        {
+        public:
+            TkDiffReporter();
+        };
+
+        // Note that this will be found on Linux too.
+        // See https://github.com/approvals/ApprovalTests.cpp/issues/138 for limitations
+        class CLionDiffReporter : public GenericDiffReporter
+        {
+        public:
+            CLionDiffReporter();
+        };
+
+        class MacDiffReporter : public FirstWorkingReporter
+        {
+        public:
+            MacDiffReporter();
+
+            bool report(std::string received, std::string approved) const override;
+        };
+    }
 }
-}
-
-#endif //APPROVALTESTS_CPP_MACREPORTERS_H

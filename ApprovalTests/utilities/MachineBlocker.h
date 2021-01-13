@@ -1,40 +1,26 @@
-#ifndef APPROVALTESTS_CPP_MACHINEBLOCKER_H
-#define APPROVALTESTS_CPP_MACHINEBLOCKER_H
+#pragma once
 
 #include "Blocker.h"
 #include <utility>
 #include "SystemUtils.h"
 
-namespace ApprovalTests {
-class MachineBlocker : public Blocker
+namespace ApprovalTests
 {
-private:
-    std::string machineName;
-    bool block;
-
-    MachineBlocker() = delete;
-
-public:
-    MachineBlocker(std::string machineName, bool block ) : machineName(std::move(machineName)), block(block)
+    class MachineBlocker : public Blocker
     {
-    }
+    private:
+        std::string machineName;
+        bool block;
 
-    static MachineBlocker onMachineNamed( const std::string& machineName )
-    {
-        return MachineBlocker(machineName, true);
-    }
+        MachineBlocker() = delete;
 
-    static MachineBlocker onMachinesNotNamed( const std::string& machineName )
-    {
-        return MachineBlocker(machineName, false);
-    }
+    public:
+        MachineBlocker(std::string machineName_, bool block_);
 
-    virtual bool isBlockingOnThisMachine() const override
-    {
-        const auto isMachine = (SystemUtils::getMachineName() == machineName);
-        return isMachine == block;
-    }
-};
+        static MachineBlocker onMachineNamed(const std::string& machineName);
+
+        static MachineBlocker onMachinesNotNamed(const std::string& machineName);
+
+        virtual bool isBlockingOnThisMachine() const override;
+    };
 }
-
-#endif //APPROVALTESTS_CPP_MACHINEBLOCKER_H

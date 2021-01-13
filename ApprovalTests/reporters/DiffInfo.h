@@ -1,66 +1,38 @@
-#ifndef APPROVALTESTS_CPP_DIFFINFO_H
-#define APPROVALTESTS_CPP_DIFFINFO_H
+#pragma once
 
 #include <string>
 #include <utility>
-#include "ApprovalTests/utilities/FileUtils.h"
-#include "ApprovalTests/utilities/StringUtils.h"
-#include "ApprovalTests/utilities/SystemUtils.h"
+#include <vector>
 
-namespace ApprovalTests {
-enum class Type { TEXT, IMAGE, TEXT_AND_IMAGE };
-
-
-
-struct DiffInfo
+namespace ApprovalTests
 {
-    DiffInfo(std::string program, Type type) :
-        program(std::move(program)),
-        arguments("%s %s"),
-        type(type)
+    enum class Type
     {
-    }
-    DiffInfo(std::string program, std::string arguments, Type type) :
-        program(std::move(program)),
-        arguments(std::move(arguments)),
-        type(type)
+        TEXT,
+        IMAGE,
+        TEXT_AND_IMAGE
+    };
+
+    struct DiffInfo
     {
-    }
-    std::string program;
-    std::string arguments;
-    Type type;
+        static std::string receivedFileTemplate();
 
-    std::string getProgramForOs() const
-    {
-        std::string result = program;
-        if (result.rfind("{ProgramFiles}", 0) == 0)
-        {
-            const std::vector<const char*> envVars =
-            {
-                "ProgramFiles",
-                "ProgramW6432",
-                "ProgramFiles(x86)"
-            };
+        static std::string approvedFileTemplate();
 
-            for(const auto& envVar : envVars)
-            {
-                std::string envVarValue = SystemUtils::safeGetEnv(envVar);
-                if (envVarValue.empty())
-                {
-                    continue;
-                }
-                envVarValue += '\\';
+        static std::string programFileTemplate();
 
-                auto result1 = StringUtils::replaceAll(result, "{ProgramFiles}", envVarValue);
-                if (FileUtils::fileExists(result1))
-                {
-                    return result1;
-                }
-            }
-        }
-        return result;
-    }
-};
+        static std::string getDefaultArguments();
+
+        DiffInfo(std::string program_, Type type_);
+
+        DiffInfo(std::string program_, std::string arguments_, Type type_);
+
+        std::string program;
+        std::string arguments;
+        Type type;
+
+        static std::vector<std::string> getProgramFileLocations();
+
+        std::string getProgramForOs() const;
+    };
 }
-
-#endif //APPROVALTESTS_CPP_DIFFINFO_H

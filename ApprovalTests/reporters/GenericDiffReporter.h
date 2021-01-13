@@ -1,55 +1,20 @@
-#ifndef APPROVALTESTS_CPP_GENERICDIFFREPORTER_H
-#define APPROVALTESTS_CPP_GENERICDIFFREPORTER_H
+#pragma once
 
 #include "DiffPrograms.h"
 #include "CommandReporter.h"
 #include "ApprovalTests/launchers/SystemLauncher.h"
 #include <string>
-#include <vector>
 
-namespace ApprovalTests {
-class GenericDiffReporter : public CommandReporter {
-private:
-    SystemLauncher launcher;
-public:
-    explicit GenericDiffReporter(const std::string& program) : CommandReporter(program, &launcher)
+namespace ApprovalTests
+{
+    class GenericDiffReporter : public CommandReporter
     {
-        checkForCygwin();
-    }
-    explicit GenericDiffReporter(const DiffInfo& info) : CommandReporter(info.getProgramForOs(), &launcher)
-    {
-        checkForCygwin();
-    }
+    public:
+        SystemLauncher launcher;
 
-    void checkForCygwin()
-    {
-        if ( SystemUtils::isCygwin())
-        {
-            launcher.setConvertArgumentsForSystemLaunchingFunction(convertForCygwin);
-        }
-    }
+    public:
+        explicit GenericDiffReporter(const std::string& program);
 
-    static std::vector<std::string> convertForCygwin(std::vector<std::string> argv)
-    {
-        if (! SystemUtils::isCygwin())
-        {
-            return argv;
-        }
-        std::vector<std::string> copy = argv;
-        for( size_t i = 0; i != argv.size(); ++i )
-        {
-            if ( i == 0)
-            {
-                copy[i] = "$(cygpath '"  + argv[i] + "')";
-            }
-            else
-            {
-                copy[i] = "$(cygpath -aw '"  + argv[i] + "')";
-            }
-        }
-        return copy;
-    }
-};
+        explicit GenericDiffReporter(const DiffInfo& info);
+    };
 }
-
-#endif //APPROVALTESTS_CPP_GENERICDIFFREPORTER_H

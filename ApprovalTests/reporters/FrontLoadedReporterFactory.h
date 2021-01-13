@@ -1,32 +1,20 @@
-#ifndef APPROVALTESTS_CPP_FRONTLOADEDREPORTERFACTORY_H
-#define APPROVALTESTS_CPP_FRONTLOADEDREPORTERFACTORY_H
+#pragma once
 
 #include "ApprovalTests/core/Reporter.h"
 #include "DefaultFrontLoadedReporter.h"
 
 #include <memory>
 
-namespace ApprovalTests {
-//! Implementation detail of Approvals::useAsFrontLoadedReporter()
-class FrontLoadedReporterFactory
+namespace ApprovalTests
 {
-    static std::shared_ptr<Reporter>& frontLoadedReporter()
+    //! Implementation detail of Approvals::useAsFrontLoadedReporter()
+    class FrontLoadedReporterFactory
     {
-        static std::shared_ptr<Reporter> reporter = std::make_shared<DefaultFrontLoadedReporter>();
-        return reporter;
-    }
+        static std::shared_ptr<Reporter>& frontLoadedReporter();
 
-public:
-    static std::shared_ptr<Reporter> getFrontLoadedReporter()
-    {
-        return frontLoadedReporter();
-    }
+    public:
+        static std::shared_ptr<Reporter> getFrontLoadedReporter();
 
-    static void setFrontLoadedReporter( const std::shared_ptr<Reporter>& reporter)
-    {
-        frontLoadedReporter() = reporter;
-    }
-};
+        static void setFrontLoadedReporter(const std::shared_ptr<Reporter>& reporter);
+    };
 }
-
-#endif //APPROVALTESTS_CPP_FRONTLOADEDREPORTERFACTORY_H

@@ -1,18 +1,13 @@
-#ifndef APPROVALTESTS_CPP_QUIETREPORTER_H
-#define APPROVALTESTS_CPP_QUIETREPORTER_H
+#pragma once
 
 #include "ApprovalTests/core/Reporter.h"
 
-namespace ApprovalTests {
-// A reporter that does nothing. Failing tests will still fail, but nothing will be launched.
-class QuietReporter : public Reporter
+namespace ApprovalTests
 {
-public:
-    bool report(std::string /*received*/, std::string /*approved*/) const override
+    // A reporter that does nothing. Failing tests will still fail, but nothing will be launched.
+    class QuietReporter : public Reporter
     {
-        return true;
-    }
-};
+    public:
+        bool report(std::string /*received*/, std::string /*approved*/) const override;
+    };
 }
-
-#endif //APPROVALTESTS_CPP_QUIETREPORTER_H

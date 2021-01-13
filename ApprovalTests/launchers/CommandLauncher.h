@@ -1,17 +1,15 @@
-#ifndef APPROVALTESTS_CPP_COMMANDLAUNCHER_H
-#define APPROVALTESTS_CPP_COMMANDLAUNCHER_H
+#pragma once
 
 #include <string>
-#include <vector>
 
-namespace ApprovalTests {
-// An interface to trigger execution of a command. See also SystemLauncher
-class CommandLauncher
+namespace ApprovalTests
 {
-public:
-    virtual ~CommandLauncher() = default;
-    virtual bool launch(std::vector<std::string> argv) = 0;
-};
+    // An interface to trigger execution of a command. See also SystemLauncher
+    class CommandLauncher
+    {
+    public:
+        virtual ~CommandLauncher() = default;
+        virtual bool launch(const std::string& commandLine) = 0;
+        virtual std::string getCommandLine(const std::string& commandLine) const = 0;
+    };
 }
-
-#endif  

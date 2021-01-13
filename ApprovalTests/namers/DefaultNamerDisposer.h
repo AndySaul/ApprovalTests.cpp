@@ -1,28 +1,20 @@
-#ifndef APPROVALTESTS_CPP_DEFAULTNAMERDISPOSER_H
-#define APPROVALTESTS_CPP_DEFAULTNAMERDISPOSER_H
+#pragma once
 
-#include <utility>
 #include "DefaultNamerFactory.h"
 #include "ApprovalTests/utilities/Macros.h"
 
-namespace ApprovalTests {
-//! Implementation detail of Approvals::useAsDefaultNamer()
-class APPROVAL_TESTS_NO_DISCARD DefaultNamerDisposer
+namespace ApprovalTests
 {
-private:
-    NamerCreator previous_result;
-public:
-    explicit DefaultNamerDisposer(NamerCreator namerCreator)
+    //! Implementation detail of Approvals::useAsDefaultNamer()
+    class APPROVAL_TESTS_NO_DISCARD DefaultNamerDisposer
     {
-        previous_result = DefaultNamerFactory::getDefaultNamer();
-        DefaultNamerFactory::setDefaultNamer(std::move(namerCreator));
-    }
+    private:
+        NamerCreator previous_result;
 
-    ~DefaultNamerDisposer()
-    {
-        DefaultNamerFactory::setDefaultNamer(previous_result);
-    }
-};
+    public:
+        explicit DefaultNamerDisposer(NamerCreator namerCreator);
+        DefaultNamerDisposer(const DefaultNamerDisposer&) = default;
+
+        ~DefaultNamerDisposer();
+    };
 }
-
-#endif //APPROVALTESTS_CPP_DEFAULTNAMERDISPOSER_H

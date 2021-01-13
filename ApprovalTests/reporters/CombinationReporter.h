@@ -1,35 +1,20 @@
-#ifndef APPROVALTESTS_CPP_COMBINATIONREPORTER_H
-#define APPROVALTESTS_CPP_COMBINATIONREPORTER_H
+#pragma once
 
 #include "ApprovalTests/core/Reporter.h"
 #include <memory>
 #include <vector>
 
-namespace ApprovalTests {
-class CombinationReporter : public Reporter
+namespace ApprovalTests
 {
-private:
-    std::vector< std::unique_ptr<Reporter> > reporters;
-public:
-    // Note that CombinationReporter takes ownership of the given Reporter objects
-    explicit CombinationReporter(const std::vector<Reporter*>& theReporters)
+    class CombinationReporter : public Reporter
     {
-        for(auto r : theReporters)
-        {
-            reporters.push_back(std::unique_ptr<Reporter>(r));
-        }
-    }
+    private:
+        std::vector<std::unique_ptr<Reporter>> reporters;
 
-    bool report(std::string received, std::string approved) const override
-    {
-        bool result = false;
-        for(auto& r : reporters)
-        {
-            result |= r->report(received, approved);
-        }
-        return result;
-    }
-};
+    public:
+        // Note that CombinationReporter takes ownership of the given Reporter objects
+        explicit CombinationReporter(const std::vector<Reporter*>& theReporters);
+
+        bool report(std::string received, std::string approved) const override;
+    };
 }
-
-#endif //APPROVALTESTS_CPP_COMBINATIONREPORTER_H

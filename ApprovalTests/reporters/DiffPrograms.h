@@ -1,65 +1,79 @@
-#ifndef APPROVALTESTS_CPP_DIFFPROGRAMS_H
-#define APPROVALTESTS_CPP_DIFFPROGRAMS_H
+#pragma once
 
 #include "DiffInfo.h"
 
-///////////////////////////////////////////////////////////////////////////////
-#define APPROVAL_TESTS_MACROS_ENTRY(name, defaultValue) \
-        inline DiffInfo name() { return defaultValue; }
-///////////////////////////////////////////////////////////////////////////////
+namespace ApprovalTests
+{
+    namespace DiffPrograms
+    {
+        namespace Mac
+        {
+            DiffInfo DIFF_MERGE();
 
-namespace ApprovalTests {
-namespace DiffPrograms {
+            // begin-snippet: add_reporter_macro_header
+            DiffInfo ARAXIS_MERGE();
+            // end-snippet
 
+            DiffInfo BEYOND_COMPARE();
 
-    namespace Mac {
-        APPROVAL_TESTS_MACROS_ENTRY(DIFF_MERGE,
-              DiffInfo("/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "%s %s -nosplash", Type::TEXT))
+            DiffInfo KALEIDOSCOPE();
 
-        APPROVAL_TESTS_MACROS_ENTRY(BEYOND_COMPARE, DiffInfo("/Applications/Beyond Compare.app/Contents/MacOS/bcomp", Type::TEXT))
+            DiffInfo SUBLIME_MERGE();
 
-        APPROVAL_TESTS_MACROS_ENTRY(KALEIDOSCOPE, DiffInfo("/Applications/Kaleidoscope.app/Contents/MacOS/ksdiff", Type::TEXT_AND_IMAGE))
+            DiffInfo KDIFF3();
 
-        APPROVAL_TESTS_MACROS_ENTRY(KDIFF3, DiffInfo("/Applications/kdiff3.app/Contents/MacOS/kdiff3", "%s %s -m", Type::TEXT))
+            DiffInfo P4MERGE();
 
-        APPROVAL_TESTS_MACROS_ENTRY(P4MERGE, DiffInfo("/Applications/p4merge.app/Contents/MacOS/p4merge", Type::TEXT_AND_IMAGE))
+            DiffInfo TK_DIFF();
 
-        APPROVAL_TESTS_MACROS_ENTRY(TK_DIFF, DiffInfo("/Applications/TkDiff.app/Contents/MacOS/tkdiff", Type::TEXT))
+            DiffInfo VS_CODE();
 
-        APPROVAL_TESTS_MACROS_ENTRY(VS_CODE, DiffInfo("/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "-d %s %s", Type::TEXT))
-    }
-    namespace Linux {
-        // More ideas available from: https://www.tecmint.com/best-linux-file-diff-tools-comparison/
-        APPROVAL_TESTS_MACROS_ENTRY(KDIFF3, DiffInfo("kdiff3", Type::TEXT))
+            DiffInfo CLION();
+        }
 
-        APPROVAL_TESTS_MACROS_ENTRY(MELD, DiffInfo("meld", Type::TEXT))
-    }
-    namespace Windows {
-        APPROVAL_TESTS_MACROS_ENTRY(BEYOND_COMPARE_3, DiffInfo("{ProgramFiles}Beyond Compare 3\\BCompare.exe", Type::TEXT_AND_IMAGE))
+        namespace Linux
+        {
+            DiffInfo SUBLIME_MERGE_SNAP();
 
-        APPROVAL_TESTS_MACROS_ENTRY(BEYOND_COMPARE_4, DiffInfo("{ProgramFiles}Beyond Compare 4\\BCompare.exe", Type::TEXT_AND_IMAGE))
+            DiffInfo SUBLIME_MERGE_FLATPAK();
 
-        APPROVAL_TESTS_MACROS_ENTRY(TORTOISE_IMAGE_DIFF,
-              DiffInfo("{ProgramFiles}TortoiseSVN\\bin\\TortoiseIDiff.exe", "/left:%s /right:%s", Type::IMAGE))
+            DiffInfo SUBLIME_MERGE_REPOSITORY_PACKAGE();
 
-        APPROVAL_TESTS_MACROS_ENTRY(TORTOISE_TEXT_DIFF, DiffInfo("{ProgramFiles}TortoiseSVN\\bin\\TortoiseMerge.exe", Type::TEXT))
+            DiffInfo SUBLIME_MERGE_DIRECT_DOWNLOAD();
 
-        APPROVAL_TESTS_MACROS_ENTRY(TORTOISE_GIT_IMAGE_DIFF,
-              DiffInfo("{ProgramFiles}TortoiseGit\\bin\\TortoiseGitIDiff.exe", "/left:%s /right:%s", Type::IMAGE))
+            // More ideas available from: https://www.tecmint.com/best-linux-file-diff-tools-comparison/
+            DiffInfo KDIFF3();
 
-        APPROVAL_TESTS_MACROS_ENTRY(TORTOISE_GIT_TEXT_DIFF, DiffInfo("{ProgramFiles}TortoiseGit\\bin\\TortoiseGitMerge.exe", Type::TEXT))
+            DiffInfo MELD();
 
-        APPROVAL_TESTS_MACROS_ENTRY(WIN_MERGE_REPORTER, DiffInfo("{ProgramFiles}WinMerge\\WinMergeU.exe", Type::TEXT_AND_IMAGE))
+            DiffInfo BEYOND_COMPARE();
+        }
 
-        APPROVAL_TESTS_MACROS_ENTRY(ARAXIS_MERGE, DiffInfo("{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", Type::TEXT_AND_IMAGE))
+        namespace Windows
+        {
+            DiffInfo BEYOND_COMPARE_3();
 
-        APPROVAL_TESTS_MACROS_ENTRY(CODE_COMPARE, DiffInfo("{ProgramFiles}Devart\\Code Compare\\CodeCompare.exe", Type::TEXT))
+            DiffInfo BEYOND_COMPARE_4();
 
-        APPROVAL_TESTS_MACROS_ENTRY(KDIFF3, DiffInfo("{ProgramFiles}KDiff3\\kdiff3.exe", Type::TEXT))
-        APPROVAL_TESTS_MACROS_ENTRY(VS_CODE, DiffInfo("{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s", Type::TEXT))
+            DiffInfo TORTOISE_IMAGE_DIFF();
 
+            DiffInfo TORTOISE_TEXT_DIFF();
+
+            DiffInfo TORTOISE_GIT_IMAGE_DIFF();
+
+            DiffInfo TORTOISE_GIT_TEXT_DIFF();
+
+            DiffInfo WIN_MERGE_REPORTER();
+
+            DiffInfo ARAXIS_MERGE();
+
+            DiffInfo CODE_COMPARE();
+
+            DiffInfo SUBLIME_MERGE();
+
+            DiffInfo KDIFF3();
+
+            DiffInfo VS_CODE();
+        }
     }
 }
-}
-
-#endif //APPROVALTESTS_CPP_DIFFPROGRAMS_H

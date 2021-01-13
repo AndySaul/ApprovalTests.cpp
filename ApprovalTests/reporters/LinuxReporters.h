@@ -1,39 +1,64 @@
-#ifndef APPROVALTESTS_CPP_LINUXREPORTERS_H
-#define APPROVALTESTS_CPP_LINUXREPORTERS_H
+#pragma once
 
-#include "DiffPrograms.h"
 #include "GenericDiffReporter.h"
 #include "FirstWorkingReporter.h"
 
-namespace ApprovalTests {
-namespace Linux
+namespace ApprovalTests
 {
-    class KDiff3Reporter : public GenericDiffReporter {
-    public:
-        KDiff3Reporter() : GenericDiffReporter(DiffPrograms::Linux::KDIFF3()) {}
-    };
-
-    class MeldReporter : public GenericDiffReporter {
-    public:
-        MeldReporter() : GenericDiffReporter(DiffPrograms::Linux::MELD()) {}
-    };
-
-    class LinuxDiffReporter : public FirstWorkingReporter
+    namespace Linux
     {
-    public:
-        LinuxDiffReporter() : FirstWorkingReporter(
-                {
-                        // begin-snippet: linux_diff_reporters
-                        new MeldReporter(),
-                        new KDiff3Reporter()
-                        // end-snippet
-                }
-        )
+        class SublimeMergeSnapReporter : public GenericDiffReporter
         {
-        }
-    };
+        public:
+            SublimeMergeSnapReporter();
+        };
 
-}
-}
+        class SublimeMergeFlatpakReporter : public GenericDiffReporter
+        {
+        public:
+            SublimeMergeFlatpakReporter();
+        };
 
-#endif //APPROVALTESTS_CPP_LINUXREPORTERS_H
+        class SublimeMergeRepositoryPackageReporter : public GenericDiffReporter
+        {
+        public:
+            SublimeMergeRepositoryPackageReporter();
+        };
+
+        class SublimeMergeDirectDownloadReporter : public GenericDiffReporter
+        {
+        public:
+            SublimeMergeDirectDownloadReporter();
+        };
+
+        class SublimeMergeReporter : public FirstWorkingReporter
+        {
+        public:
+            SublimeMergeReporter();
+        };
+
+        class KDiff3Reporter : public GenericDiffReporter
+        {
+        public:
+            KDiff3Reporter();
+        };
+
+        class MeldReporter : public GenericDiffReporter
+        {
+        public:
+            MeldReporter();
+        };
+
+        class BeyondCompareReporter : public GenericDiffReporter
+        {
+        public:
+            BeyondCompareReporter();
+        };
+
+        class LinuxDiffReporter : public FirstWorkingReporter
+        {
+        public:
+            LinuxDiffReporter();
+        };
+    }
+}

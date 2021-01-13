@@ -15,44 +15,51 @@ TEST(TestCaseName, TestName)
 // end-snippet
 {
     ApprovalTestNamer namer;
-    EXPECT_EQ(namer.getOutputFileBaseName(), "GoogleFixtureNamerCustomizationTests.TestCaseName.TestName");
+    EXPECT_EQ(namer.getOutputFileBaseName(),
+              "GoogleFixtureNamerCustomizationTests.TestCaseName.TestName");
 }
 
 TEST(GoogleFixtureNamerCustomizationTests, EliminatesDuplicatedClassName)
 {
     ApprovalTestNamer namer;
-    EXPECT_EQ(namer.getOutputFileBaseName(), "GoogleFixtureNamerCustomizationTests.EliminatesDuplicatedClassName");
+    EXPECT_EQ(namer.getOutputFileBaseName(),
+              "GoogleFixtureNamerCustomizationTests.EliminatesDuplicatedClassName");
 }
 
-class GoogleFixtureNamerCustomizationTestsFixture : public ::testing::Test{};
+class GoogleFixtureNamerCustomizationTestsFixture : public ::testing::Test
+{
+};
 
 TEST_F(GoogleFixtureNamerCustomizationTestsFixture, OnlyMatchesFixtureAtEnd)
 {
     ApprovalTestNamer namer;
-    EXPECT_EQ(namer.getOutputFileBaseName(), "GoogleFixtureNamerCustomizationTests.OnlyMatchesFixtureAtEnd");
+    EXPECT_EQ(namer.getOutputFileBaseName(),
+              "GoogleFixtureNamerCustomizationTests.OnlyMatchesFixtureAtEnd");
 }
 
 // begin-snippet: googletest_customize_function
 // main.cpp
-bool dropTestCaseNamesWithIgnoreThis(const std::string& /*testFileNameWithExtension*/, const std::string& testCaseName)
+bool dropTestCaseNamesWithIgnoreThis(const std::string& /*testFileNameWithExtension*/,
+                                     const std::string& testCaseName)
 {
     return StringUtils::contains(testCaseName, "IgnoreThis");
 }
 
-auto ignoreNames = GoogleConfiguration::addTestCaseNameRedundancyCheck(dropTestCaseNamesWithIgnoreThis);
+auto ignoreNames =
+    GoogleConfiguration::addTestCaseNameRedundancyCheck(dropTestCaseNamesWithIgnoreThis);
 // end-snippet
 
 // begin-snippet: googletest_customize_lambda
 // main.cpp
 auto ignoreNamesLambda = GoogleConfiguration::addTestCaseNameRedundancyCheck(
-    [](const std::string& /*testFileNameWithExtension*/, const std::string& testCaseName)
-    {
+    [](const std::string& /*testFileNameWithExtension*/,
+       const std::string& testCaseName) {
         return StringUtils::contains(testCaseName, "IgnoreThis");
     });
 // end-snippet
 
 // begin-snippet: googletest_customize_test
-TEST(TestCaseName_IgnoreThis, TestName )
+TEST(TestCaseName_IgnoreThis, TestName)
 // end-snippet
 {
     ApprovalTestNamer namer;
@@ -63,4 +70,3 @@ TEST(TestCaseName_IgnoreThis, TestName )
 
     EXPECT_EQ(namer.getOutputFileBaseName(), outputFileBaseName);
 }
-

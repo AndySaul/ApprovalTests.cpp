@@ -1,25 +1,12 @@
-#ifndef APPROVALTESTS_CPP_DIFFREPORTER_H
-#define APPROVALTESTS_CPP_DIFFREPORTER_H
+#pragma once
 
 #include "FirstWorkingReporter.h"
-#include "WindowsReporters.h"
-#include "MacReporters.h"
-#include "LinuxReporters.h"
 
-namespace ApprovalTests {
-class DiffReporter : public FirstWorkingReporter
+namespace ApprovalTests
 {
-public:
-    DiffReporter() : FirstWorkingReporter(
-            {
-                    new Mac::MacDiffReporter(),
-                    new Linux::LinuxDiffReporter(),
-                    new Windows::WindowsDiffReporter()
-            }
-    )
+    class DiffReporter : public FirstWorkingReporter
     {
-    }
-};
+    public:
+        DiffReporter();
+    };
 }
-
-#endif //APPROVALTESTS_CPP_DIFFREPORTER_H

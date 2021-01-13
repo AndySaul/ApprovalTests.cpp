@@ -1,49 +1,25 @@
-#ifndef APPROVALTESTS_CPP_STRINGWRITER_H
-#define APPROVALTESTS_CPP_STRINGWRITER_H
+#pragma once
 
-#include <string>
-#include <fstream>
-#include <stdexcept>
-#include <utility>
 #include "ApprovalTests/core/ApprovalWriter.h"
 
-namespace ApprovalTests {
-class StringWriter : public ApprovalWriter
+namespace ApprovalTests
 {
-private:
-    std::string s;
-    std::string ext;
-
-public:
-    explicit StringWriter( std::string contents, std::string fileExtensionWithDot = ".txt" )
-        : s(std::move(contents)), ext(std::move(fileExtensionWithDot)) {}
-
-    std::string getFileExtensionWithDot() const override
+    class StringWriter : public ApprovalWriter
     {
-        return ext;
-    }
+    private:
+        std::string s;
+        std::string ext;
 
-    void write( std::string path ) const override
-    {
-        std::ofstream out( path.c_str(), std::ofstream::out );
-        if ( ! out)
-        {
-            throw std::runtime_error("Unable to write file: " + path);
-        }
-        this->Write( out );
-        out.close();
-    }
+    public:
+        explicit StringWriter(std::string contents,
+                              std::string fileExtensionWithDot = ".txt");
 
-    void Write( std::ostream &out ) const
-    {
-        out << s << "\n";
-    }
+        std::string getFileExtensionWithDot() const override;
 
-    virtual void cleanUpReceived(std::string receivedPath) const override {
-        remove(receivedPath.c_str());
-    }
+        void write(std::string path) const override;
 
+        void Write(std::ostream& out) const;
 
-};
+        virtual void cleanUpReceived(std::string receivedPath) const override;
+    };
 }
-#endif

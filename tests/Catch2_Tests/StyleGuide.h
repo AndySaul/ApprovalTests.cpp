@@ -1,6 +1,5 @@
 
-#ifndef APPROVALTESTS_CPP_STYLEGUIDE_H
-#define APPROVALTESTS_CPP_STYLEGUIDE_H
+#pragma once
 
 #define MACRO_NAME 1
 
@@ -18,6 +17,3 @@ namespace ExampleNameSpace
         int dataMember = 0;
     };
 }
-
-
-#endif //APPROVALTESTS_CPP_STYLEGUIDE_H

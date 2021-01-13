@@ -1,0 +1,16 @@
+{
+  "ReadOnly": false,
+  "TocLevel": 5,
+  "Exclude": [
+    "cmake-build",
+    "build",
+    "sphinx/tests/approved_files"
+  ],
+  "UrlsAsSnippets": [],
+  "TocExcludes": [
+    "Exclude Heading1",
+    "Exclude Heading2"
+  ],
+  "WriteHeader": false,
+  "Convention": "InPlaceOverwrite"
+}

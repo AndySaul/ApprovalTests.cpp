@@ -1,39 +1,21 @@
-#ifndef APPROVALTESTS_CPP_GOOGLECONFIGURATION_H
-#define APPROVALTESTS_CPP_GOOGLECONFIGURATION_H
+#pragma once
 
 #include "GoogleCustomizationsFactory.h"
 
-namespace ApprovalTests {
-class GoogleConfiguration
+namespace ApprovalTests
 {
-public:
-    // This result is not used, it is only there to allow the method to execute, when this is used outside a function.
-    APPROVAL_TESTS_NO_DISCARD static bool addTestCaseNameRedundancyCheck(GoogleCustomizationsFactory::Comparator comparator)
+    class GoogleConfiguration
     {
-        return GoogleCustomizationsFactory::addTestCaseNameRedundancyCheck(comparator);
-    }
+    public:
+        // This result is not used, it is only there to allow the method to execute, when this is used outside a function.
+        APPROVAL_TESTS_NO_DISCARD static bool addTestCaseNameRedundancyCheck(
+            GoogleCustomizationsFactory::Comparator comparator);
 
-    // This result is not used, it is only there to allow the method to execute, when this is used outside a function.
-    APPROVAL_TESTS_NO_DISCARD static bool addIgnorableTestCaseNameSuffix(std::string suffix)
-    {
-        return addTestCaseNameRedundancyCheck( createIgnorableTestCaseNameSuffixCheck(suffix) );
-    }
+        // This result is not used, it is only there to allow the method to execute, when this is used outside a function.
+        APPROVAL_TESTS_NO_DISCARD static bool
+        addIgnorableTestCaseNameSuffix(std::string suffix);
 
-    static GoogleCustomizationsFactory::Comparator createIgnorableTestCaseNameSuffixCheck( const std::string& suffix )
-    {
-        return [suffix](std::string testFileNameWithExtension, std::string testCaseName)
-        {
-            if (testCaseName.length() <= suffix.length() || !StringUtils::endsWith(testCaseName, suffix))
-            {
-                return false;
-            }
-
-            auto withoutSuffix = testCaseName.substr(0, testCaseName.length() - suffix.length());
-            auto withFileExtension = withoutSuffix + ".";
-            return StringUtils::contains(testFileNameWithExtension, withFileExtension);
-        };
-    }
-};
+        static GoogleCustomizationsFactory::Comparator
+        createIgnorableTestCaseNameSuffixCheck(const std::string& suffix);
+    };
 }
-
-#endif //APPROVALTESTS_CPP_GOOGLECONFIGURATION_H

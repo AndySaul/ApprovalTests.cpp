@@ -5,26 +5,45 @@
 
 Preparation:
 
-- [ ] Push all changes
-- [ ] Check that the [builds are passing](https://github.com/approvals/ApprovalTests.cpp/commits/master)
-- [ ] Write summary of changes since last release, based on changes since [the last release](https://github.com/approvals/ApprovalTests.cpp/releases)
-- [ ] Determine the semantic version number
-- [ ] Update the version number in [build_hpp.sh](/build/build_hpp.sh)
-- [ ] On the features page, add the line `## [new version number]` after `## vNext`
+- Determine the type of semantic release - major, minor or patch 
 
-Creating the Build
+Doing the release:
 
-- [ ] Run `build_hpp.sh` - this updates [the starter project](https://github.com/approvals/ApprovalTests.cpp.StarterProject), tests that it builds, and if so, **commits and pushes it**
+```bash
+cd build
 
-Publishing
+# Run one of:
 
-- [ ] Commit and push `ApprovalTests.cpp`
-- [ ] Finish off the upload to github, by uploading the new .hpp, pasting in the release notes, and hitting "Publish release"
-- [ ] Finish off the release Tweet
-- [ ] Close any [Issues](https://github.com/approvals/ApprovalTests.cpp/issues) that were resolved in this release
+deploy_major_release.py
+deploy_minor_release.py
+deploy_patch_release.py
 
-Prepare for next release
+prepare_major_release.py
+prepare_minor_release.py
+prepare_patch_release.py
+```
 
-- [ ] Change version number to current version number, and new version number to `$UNSET_VERSION`
-- [ ] Make sure the release notes named with the new version exist
-- [ ] `cp relnotes_template.md relnotes_X.X.X.md`
+## Overview of steps
+
+![Flow of files during release](../doc/images/release_files_mindmap.png?raw=true)
+
+## How to add a new release to Conan
+
+The release process needs to submit a pull request to add the new release to [https://github.com/conan-io/conan-center-index/blob/master/recipes/approvaltests.cpp/all/conandata.yml](https://github.com/conan-io/conan-center-index/blob/master/recipes/approvaltests.cpp/all/conandata.yml)
+
+This is only partially automated at the moment.
+
+You will need to:
+
+* Once-off Preparation
+    * Either:
+    * Either:
+        * Fork the [conan-center-index](https://github.com/conan-io/conan-center-index/) repo.
+    * Or:
+        * Request write-permission to [claremacrae/conan-center-index](https://github.com/claremacrae/conan-center-index)
+    * Clone chosen conan-center-index fork to your machine
+    * Edit [build/scripts/conan_release.py](/build/scripts/conan_release.py)'s `get_conan_repo_directory()()` to add the relative path to your cloned fork
+    * Install Conan
+    * Install the [conan-center hook](https://github.com/conan-io/conan-center-index/blob/master/docs/how_to_add_packages.md#test-the-recipe-locally)
+* Run the release process as normal - this appends lines for your new release to your copy of `conandata.yml`
+* The 'deploy' step will test the changes, and prompt you to submit a pull request

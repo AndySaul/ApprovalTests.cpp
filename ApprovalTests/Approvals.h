@@ -1,172 +1,269 @@
-#ifndef APPROVALTESTS_CPP_APPROVALS_H
-#define APPROVALTESTS_CPP_APPROVALS_H
-
+#pragma once
 #include <string>
 #include <functional>
 #include <exception>
+#include <utility>
+
+#include "ApprovalTests/reporters/FrontLoadedReporterDisposer.h"
 #include "ApprovalTests/core/FileApprover.h"
-#include "reporters/DefaultReporter.h"
 #include "reporters/DefaultReporterDisposer.h"
 #include "ApprovalTests/core/Reporter.h"
-#include "namers/ApprovalTestNamer.h"
 #include "writers/ExistingFile.h"
-#include "namers/ExistingFileNamer.h"
 #include "namers/SubdirectoryDisposer.h"
 #include "namers/DefaultNamerDisposer.h"
+#include "core/Options.h"
+#include "utilities/StringMaker.h"
 
-namespace ApprovalTests {
-class Approvals {
-private:
-    Approvals() = default;
+namespace ApprovalTests
+{
 
-    ~Approvals() = default;
-
-public:
-    static std::shared_ptr<ApprovalNamer> getDefaultNamer()
+    // TCompileTimeOptions must have a type ToStringConverter, which must have a method toString()
+    template <typename TCompileTimeOptions> class TApprovals
     {
-        return DefaultNamerFactory::getDefaultNamer()();
-    }
+    private:
+        TApprovals() = default;
 
-    static void verify(std::string contents, const Reporter &reporter = DefaultReporter()) {
-        verifyWithExtension(contents, ".txt", reporter);
-    }
+        ~TApprovals() = default;
 
-    static void verifyWithExtension(std::string contents, const std::string& fileExtensionWithDot, const Reporter &reporter = DefaultReporter()) {
-        StringWriter writer(contents, fileExtensionWithDot);
-        FileApprover::verify(*getDefaultNamer(), writer, reporter);
-    }
-
-    static void verify(const ApprovalWriter& writer, const Reporter &reporter = DefaultReporter())
-    {
-        FileApprover::verify(*getDefaultNamer(), writer, reporter);
-    }
-
-    template<typename T>
-    using IsNotDerivedFromWriter = typename std::enable_if<!std::is_base_of<ApprovalWriter, T>::value, int>::type;
-
-    template<
-            typename T,
-            typename = IsNotDerivedFromWriter<T>>
-    static void verify(const T& contents, const Reporter &reporter = DefaultReporter()) {
-        verify(StringUtils::toString(contents), reporter);
-    }
-
-    template<
-            typename T,
-            typename = IsNotDerivedFromWriter<T>>
-    static void verifyWithExtension(const T& contents, const std::string& fileExtensionWithDot, const Reporter &reporter = DefaultReporter()) {
-        verifyWithExtension(StringUtils::toString(contents), fileExtensionWithDot, reporter);
-    }
-
-    template<
-        typename T,
-        typename Function,
-        typename = Detail::EnableIfNotDerivedFromReporter<Function>>
-    static void verify(const T& contents,
-                       Function converter,
-                       const Reporter &reporter = DefaultReporter())
-    {
-        std::stringstream s;
-        converter(contents, s);
-        verify(s.str(), reporter);
-    }
-
-    template<
-        typename T,
-        typename Function,
-        typename = Detail::EnableIfNotDerivedFromReporter<Function>>
-    static void verifyWithExtension(const T& contents,
-                       Function converter,
-                       const std::string& fileExtensionWithDot,
-                       const Reporter &reporter = DefaultReporter())
-    {
-        std::stringstream s;
-        converter(contents, s);
-        verifyWithExtension(s.str(), fileExtensionWithDot, reporter);
-    }
-
-    static void verifyExceptionMessage(
-        std::function<void(void)> functionThatThrows,
-        const Reporter &reporter = DefaultReporter())
-    {
-        std::string message = "*** no exception thrown ***";
-        try
+    public:
+        static std::shared_ptr<ApprovalNamer> getDefaultNamer()
         {
-            functionThatThrows();
+            return DefaultNamerFactory::getDefaultNamer()();
         }
-        catch(const std::exception& e)
+
+        template <typename T>
+        using IsNotDerivedFromWriter =
+            typename std::enable_if<!std::is_base_of<ApprovalWriter, T>::value,
+                                    int>::type;
+
+        /**@name Verifying single objects
+
+         See \userguide{TestingSingleObjects,Testing Single Objects}
+         */
+        ///@{
+        static void verify(const std::string& contents,
+                           const Options& options = Options())
         {
-            message = e.what();
+            StringWriter writer(options.scrub(contents),
+                                options.fileOptions().getFileExtension());
+            FileApprover::verify(*getDefaultNamer(), writer, options.getReporter());
         }
-        verify(message, reporter);
-    }
 
-    template<typename Iterator>
-    static void verifyAll(std::string header,
-                          const Iterator &start, const Iterator &finish,
-                          std::function<void(typename Iterator::value_type, std::ostream &)> converter,
-                          const Reporter &reporter = DefaultReporter()) {
-        std::stringstream s;
-        if (!header.empty()) {
-            s << header << "\n\n\n";
+        template <typename T, typename = IsNotDerivedFromWriter<T>>
+        static void verify(const T& contents, const Options& options = Options())
+        {
+            verify(TCompileTimeOptions::ToStringConverter::toString(contents), options);
         }
-        for (auto it = start; it != finish; ++it) {
-            converter(*it, s);
-            s << '\n';
+
+        template <typename T,
+                  typename Function,
+                  typename = Detail::EnableIfNotOptionsOrReporter<Function>>
+        static void
+        verify(const T& contents, Function converter, const Options& options = Options())
+        {
+            std::stringstream s;
+            converter(contents, s);
+            verify(s.str(), options);
         }
-        verify(s.str(), reporter);
-    }
 
-    template<typename Container>
-    static void verifyAll(std::string header,
-                          const Container &list,
-                          std::function<void(typename Container::value_type, std::ostream &)> converter,
-                          const Reporter &reporter = DefaultReporter()) {
-        verifyAll<typename Container::const_iterator>(header, list.begin(), list.end(), converter, reporter);
-    }
+        /// Note that this overload ignores any scrubber in options
+        static void verify(const ApprovalWriter& writer,
+                           const Options& options = Options())
+        {
+            FileApprover::verify(*getDefaultNamer(), writer, options.getReporter());
+        }
+        ///@}
 
-    template<typename T>
-    static void verifyAll(std::string header,
-                          const std::vector<T> &list,
-                          const Reporter &reporter = DefaultReporter()) {
-        int i = 0;
-        verifyAll<std::vector<T>>(header, list, [&](T e, std::ostream &s) { s << "[" << i++ << "] = " << e; },
-                                  reporter);
-    }
+        /**@name Verifying containers of objects - supplying an iterator range
 
-    template<typename T>
-    static void verifyAll(const std::vector<T> &list,
-                          const Reporter &reporter = DefaultReporter()) {
-        verifyAll<T>("", list, reporter);
-    }
+         See \userguide{TestingContainers,Testing Containers}
+         */
+        ///@{
+        template <typename Iterator>
+        static void
+        verifyAll(const std::string& header,
+                  const Iterator& start,
+                  const Iterator& finish,
+                  std::function<void(decltype(*start), std::ostream&)> converter,
+                  const Options& options = Options())
+        {
+            std::stringstream s;
+            if (!header.empty())
+            {
+                s << header << "\n\n\n";
+            }
+            for (auto it = start; it != finish; ++it)
+            {
+                converter(*it, s);
+                s << '\n';
+            }
+            verify(s.str(), options);
+        }
+        ///@}
 
-    static void verifyExistingFile(const std::string filePath, const Reporter &reporter = DefaultReporter()) {
-        ExistingFile writer(filePath);
-        ExistingFileNamer namer(filePath);
-        FileApprover::verify(namer, writer, reporter);
-    }
+        /**@name Verifying containers of objects - supplying a container
 
-    static SubdirectoryDisposer useApprovalsSubdirectory(std::string subdirectory = "approval_tests")
-    {
-        return SubdirectoryDisposer(subdirectory);
-    }
+         See \userguide{TestingContainers,Testing Containers}
+         */
+        ///@{
+        template <typename Container>
+        static void verifyAll(
+            const std::string& header,
+            const Container& list,
+            std::function<void(typename Container::value_type, std::ostream&)> converter,
+            const Options& options = Options())
+        {
+            verifyAll<typename Container::const_iterator>(
+                header, list.begin(), list.end(), converter, options);
+        }
 
-    static DefaultReporterDisposer useAsDefaultReporter(const std::shared_ptr<Reporter>& reporter)
-    {
-        return DefaultReporterDisposer(reporter);
-    }
+        template <typename Container>
+        static void verifyAll(const std::string& header,
+                              const Container& list,
+                              const Options& options = Options())
+        {
+            int i = 0;
+            verifyAll<Container>(
+                header,
+                list,
+                [&](typename Container::value_type e, std::ostream& s) {
+                    s << "[" << i++
+                      << "] = " << TCompileTimeOptions::ToStringConverter::toString(e);
+                },
+                options);
+        }
 
-    static FrontLoadedReporterDisposer useAsFrontLoadedReporter(const std::shared_ptr<Reporter>& reporter)
-    {
-        return FrontLoadedReporterDisposer(reporter);
-    }
+        template <typename Container>
+        static void verifyAll(const Container& list, const Options& options = Options())
+        {
+            verifyAll<Container>("", list, options);
+        }
+        ///@}
 
-    static DefaultNamerDisposer useAsDefaultNamer(NamerCreator namerCreator)
-    {
-        return DefaultNamerDisposer(namerCreator);
-    }
+        /**@name Verifying containers of objects - supplying an initializer list
 
-};
-}
+         See \userguide{TestingContainers,Testing Containers}
+         */
+        ///@{
+        template <typename T>
+        static void
+        verifyAll(const std::string& header,
+                  const std::initializer_list<T>& list,
+                  std::function<void(typename std::initializer_list<T>::value_type,
+                                     std::ostream&)> converter,
+                  const Options& options = Options())
+        {
+            verifyAll<std::initializer_list<T>>(header, list, converter, options);
+        }
 
+        template <typename T>
+        static void verifyAll(const std::string& header,
+                              const std::initializer_list<T>& list,
+                              const Options& options = Options())
+        {
+            verifyAll<std::initializer_list<T>>(header, list, options);
+        }
+
+        template <typename T>
+        static void verifyAll(const std::initializer_list<T>& list,
+                              const Options& options = Options())
+        {
+            verifyAll<std::initializer_list<T>>("", list, options);
+        }
+        ///@}
+
+        /**@name Other verify methods
+         */
+        ///@{
+
+        /*! \brief Verify the text of an exception
+
+            See \userguide{TestingExceptions,testing-exception-messages,Testing exception messages}
+         */
+        static void
+        verifyExceptionMessage(const std::function<void(void)>& functionThatThrows,
+                               const Options& options = Options())
+        {
+            std::string message = "*** no exception thrown ***";
+            try
+            {
+                functionThatThrows();
+            }
+            catch (const std::exception& e)
+            {
+                message = e.what();
+            }
+            verify(message, options);
+        }
+
+        /// Verify an existing file, that has already been written out
+        static void verifyExistingFile(const std::string& filePath,
+                                       const Options& options = Options())
+        {
+            ExistingFile writer(filePath, options);
+            FileApprover::verify(writer.getNamer(), writer, options.getReporter());
+        }
+        ///@}
+
+        /**@name Customising Approval Tests
+
+         These static methods customise various aspects
+         of Approval Tests behaviour.
+         */
+        ///@{
+
+        /// See \userguide{Configuration,using-sub-directories-for-approved-files,Using sub-directories for approved files}
+        static SubdirectoryDisposer
+        useApprovalsSubdirectory(const std::string& subdirectory = "approval_tests")
+        {
+            return SubdirectoryDisposer(subdirectory);
+        }
+
+        /// See \userguide{Reporters,registering-a-default-reporter,Registering a default reporter}
+        static DefaultReporterDisposer
+        useAsDefaultReporter(const std::shared_ptr<Reporter>& reporter)
+        {
+            return DefaultReporterDisposer(reporter);
+        }
+
+        /// See \userguide{Reporters,front-loaded-reporters,Front Loaded Reporters}
+        static FrontLoadedReporterDisposer
+        useAsFrontLoadedReporter(const std::shared_ptr<Reporter>& reporter)
+        {
+            return FrontLoadedReporterDisposer(reporter);
+        }
+
+        /// See \userguide{Namers,registering-a-custom-namer,Registering a Custom Namer}
+        static DefaultNamerDisposer useAsDefaultNamer(NamerCreator namerCreator)
+        {
+            return DefaultNamerDisposer(std::move(namerCreator));
+        }
+        ///@}
+    };
+
+#ifndef APPROVAL_TESTS_DEFAULT_STREAM_CONVERTER
+// begin-snippet: customising_to_string_default_converter
+#define APPROVAL_TESTS_DEFAULT_STREAM_CONVERTER StringMaker
+// end-snippet
 #endif
+
+    // Warning: Do not use CompileTimeOptions directly.
+    // This interface is subject to change, as future
+    // compile-time options are added.
+    template <typename TToString> struct CompileTimeOptions
+    {
+        using ToStringConverter = TToString;
+        // more template types may be added to CompileTimeOptions in future, if we add
+        // more flexibility that requires compile-time configuration.
+    };
+
+    // Template parameter TToString must have a method toString()
+    // This interface will not change, as future compile-time options are added.
+    template <typename TToString>
+    struct ToStringCompileTimeOptions : CompileTimeOptions<TToString>
+    {
+    };
+
+    using Approvals =
+        TApprovals<ToStringCompileTimeOptions<APPROVAL_TESTS_DEFAULT_STREAM_CONVERTER>>;
+}
